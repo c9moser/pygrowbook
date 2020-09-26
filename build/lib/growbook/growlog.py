@@ -339,7 +339,7 @@ class GrowlogView(Gtk.ScrolledWindow):
         tag.props.weight=Pango.Weight.BOLD
         tagtable.add(tag)
 
-        cursor=dbcon.execute("SELECT id,title,created_on,finished_on,description FROM growlog WHERE id=?;", 
+        cursor=dbcon.execute("SELECT id,title,created_on,flower_on,finished_on,description FROM growlog WHERE id=?;", 
                              (self.id,))
         row=cursor.fetchone()
         buffer.insert_with_tags(buffer.get_start_iter(),
@@ -349,11 +349,14 @@ class GrowlogView(Gtk.ScrolledWindow):
         tag.props.weight=Pango.Weight.BOLD
         tagtable.add(tag)
 
-        buffer.insert_with_tags(buffer.get_end_iter(),"Created on: ",tag)
+        buffer.insert_with_tags(buffer.get_end_iter(),_("Created on: "),tag)
         buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[2]))
 
-        buffer.insert_with_tags(buffer.get_end_iter(),"Finished on: ",tag)
-        buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[3]))
+        buffer.insert_with_tags(buffer.get_end_iter(),_("Flower on: "),tag)
+        buffer.insert(buffer.get_end_iter(), "{0}\n".format(row[3]))
+        
+        buffer.insert_with_tags(buffer.get_end_iter(),_("Finished on: "),tag)
+        buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[4]))
 
         tag=Gtk.TextTag.new('H2')
         tag.props.scale=2.0
@@ -361,7 +364,7 @@ class GrowlogView(Gtk.ScrolledWindow):
         tagtable.add(tag)
 
         buffer.insert_with_tags(buffer.get_end_iter(),"Description\n",tag)
-        buffer.insert(buffer.get_end_iter(),row[4])
+        buffer.insert(buffer.get_end_iter(),row[5])
 
         return buffer
 

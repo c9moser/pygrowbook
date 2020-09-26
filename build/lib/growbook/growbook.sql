@@ -40,7 +40,9 @@ CREATE TABLE growlog (
     title VARCHAR(1024) UNIQUE NOT NULL,
     description VARCHAR(1048576),
     created_on TIMESTAMP NOT NULL,
-    finished_on TIMESTAMP DEFAULT ''
+    flower_on DATE DEFAULT '',
+    finished_on TIMESTAMP DEFAULT '',
+    UNIQUE(title)
 );
 
 CREATE TABLE growlog_entry (
