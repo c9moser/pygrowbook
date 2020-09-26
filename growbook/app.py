@@ -84,10 +84,10 @@ class AppWindowHandle(object):
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_focus_on_click(False)
         button.add(close_image)
-        style=Gtk.RcStyle()
+        #style=Gtk.RcStyle()
         #style.xthickness=0
         #style.ythickness=0
-        button.modify_style(style)
+        #button.modify_style(style)
         button.connect('clicked',on_title_close,child)
         hbox.pack_start(button,False,False,0)
 
