@@ -269,14 +269,32 @@ class GrowlogView(Gtk.ScrolledWindow):
         Gtk.ScrolledWindow.__init__(self)
         self.id=id
 
-        cursor=dbcon.execute("SELECT title,finished_on FROM growlog WHERE id=?",(id,))
+        cursor=dbcon.execute("SELECT title,created_on,flower_on,finished_on FROM growlog WHERE id=?",(id,))
         row=cursor.fetchone()
         self.title_label=Gtk.Label(row[0])
 
-        if row[1]:
+        dtstr=row[1]
+        datestr,timestr=tuple(row[1].split(" "))
+        year,month,day=(int(i) for i in datestr.split("-"))
+        hour,minute,second=(int(i) for i in timestr.split(':'))
+        self.created_on=datetime.datetime(year,month,day,hour,minute,second)
+
+        if row[2]:
+            datestr=row[2]
+            year,month,day=(int(i) for i in datestr.split('-'))
+            self.flower_on=datetime.date(year,month,day)
+        else:
+            self.flower_on=None
+        
+        if row[3]:
             self.finished=True
+            datestr,timestr=row[3].split(' ')
+            year,month,day=(int(i) for i in datestr.split('-'))
+            hour,minute,second=(int(i) for i in timestr.split(':'))
+            self.finished_on=datetime.datetime(year,month,day,hour,minute,second)
         else:
             self.finished=False
+            self.finished_on=None
             
         viewport=Gtk.Viewport()
         self.vbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -371,9 +389,26 @@ class GrowlogView(Gtk.ScrolledWindow):
     def __create_model(self,dbcon):
         model=Gtk.ListStore(int,str,str)        
         cursor=dbcon.execute("SELECT id,created_on,entry FROM growlog_entry WHERE growlog=? ORDER BY created_on;",
-                       (self.id,))           
+                             (self.id,))
+        cdate=datetime.date(self.created_on.year,
+                            self.created_on.month,
+                            self.created_on.day)
+            
         for row in cursor:
-            model.append((row[0],row[1],row[2]))
+            datestr,timestr=row[1].split(' ')
+            y,m,d=(int(i) for i in datestr.split('-'))
+            xdate=datetime.date(y,m,d)
+            age=xdate-cdate
+
+            if self.flower_on and xdate>=self.flower_on:
+                flowering=xdate-self.flower_on
+                txt="{0}\nAge: {1}\nFlowering: {2}".format(row[1],
+                                                          age.days,
+                                                          flowering.days)
+            else:
+                txt="{0}\nAge: {1}".format(row[1],age.days)
+                
+            model.append((row[0],txt,row[2]))
 
         return model
 
