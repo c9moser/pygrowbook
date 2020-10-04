@@ -12,6 +12,7 @@
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              #
 #   GNU General Public License for more details.                               #
 ################################################################################
+
 import gi
 from gi.repository import Gtk,Pango,Gdk
 import os
@@ -375,20 +376,27 @@ class StrainView(Gtk.Box):
         self.toolbar=Gtk.Toolbar()
         self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
 
-        self.breeder_homepage_button=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
-        self.breeder_homepage_button.connect('clicked',self.on_breeder_homepage_clicked)
-        self.toolbar.insert(self.breeder_homepage_button,-1)
+        self.breeder_homepage_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
+        self.breeder_homepage_toolbutton.connect('clicked',self.on_breeder_homepage_clicked)
+        self.toolbar.insert(self.breeder_homepage_toolbutton,-1)
 
         separator=Gtk.SeparatorToolItem()
         self.toolbar.insert(separator,-1)
         
-        self.seedfinder_button=Gtk.ToolButton.new_from_stock(Gtk.STOCK_FILE)
-        self.seedfinder_button.connect('clicked', self.on_seedfinder_clicked)
-        self.toolbar.insert(self.seedfinder_button,-1)
+        self.seedfinder_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_FILE)
+        self.seedfinder_toolbutton.connect('clicked', self.on_seedfinder_clicked)
+        self.toolbar.insert(self.seedfinder_toolbutton,-1)
 
-        self.homepage_button=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
-        self.homepage_button.connect('clicked', self.on_homepage_clicked)
-        self.toolbar.insert(self.homepage_button,-1)
+        self.homepage_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
+        self.homepage_toolbutton.connect('clicked', self.on_homepage_clicked)
+        self.toolbar.insert(self.homepage_toolbutton,-1)
+
+        separator=Gtk.SeparatorToolItem()
+        self.toolbar.insert(separator,-1)
+        
+        self.refresh_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refresh_toolbutton.connect('clicked', self.on_refresh_clicked)
+        self.toolbar.insert(self.refresh_toolbutton,-1)
         
         self.pack_start(self.toolbar,False,False,0)
         
@@ -419,7 +427,10 @@ class StrainView(Gtk.Box):
     def on_breeder_homepage_clicked(self,toolbutton):
         if self.breeder_homepage:
             os.startfile(self.breeder_homepage)
-            
+
+    def on_refresh_clicked(self,toolbutton):
+        self.refresh(self.get_toplevel().dbcon)
+           
     def refresh(self,dbcon):
         self.view.set_editable(True)
         buffer=Gtk.TextBuffer.new()
@@ -432,23 +443,23 @@ class StrainView(Gtk.Box):
         self.seedfinder=row[4]
         
         if self.homepage:
-            self.homepage_button.set_sensitive(True)
+            self.homepage_toolbutton.set_sensitive(True)
         else:
-            self.homepage_button.set_sensitive(False)
+            self.homepage_toolbutton.set_sensitive(False)
 
         if self.seedfinder:
-            self.seedfinder_button.set_sensitive(True)
+            self.seedfinder_toolbutton.set_sensitive(True)
         else:
-            self.seedfinder_button.set_sensitive(False)
+            self.seedfinder_toolbutton.set_sensitive(False)
             
         cursor.execute('SELECT id,name,homepage FROM breeder WHERE id=?;',(row[1],))
         row2=cursor.fetchone()
 
         self.breeder_homepage=row2[2]
         if self.breeder_homepage:
-            self.breeder_homepage_button.set_sensitive(True)
+            self.breeder_homepage_toolbutton.set_sensitive(True)
         else:
-            self.breeder_homepage_button.set_sensitive(False)
+            self.breeder_homepage_toolbutton.set_sensitive(False)
 
         tagtable=buffer.get_tag_table()
         tag=Gtk.TextTag.new('H1')

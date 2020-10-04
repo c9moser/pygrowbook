@@ -338,6 +338,13 @@ class GrowlogView(Gtk.Box):
             self.flower_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.flower_toolbutton,-1)
 
+        self.finish_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_STOP)
+        self.finish_toolbutton.connect('clicked',self.on_finish_clicked)
+        if self.finished:
+            self.finish_toolbutton.set_sensitive(False)
+            
+        self.toolbar.insert(self.finish_toolbutton,-1)
+        
         separator=Gtk.SeparatorToolItem.new()
         self.toolbar.insert(separator,-1)
 
@@ -357,6 +364,13 @@ class GrowlogView(Gtk.Box):
         self.remove_log_entry_toolbutton.connect('clicked',self.on_remove_log_entry_clicked)
         self.remove_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.remove_log_entry_toolbutton,-1)
+
+        separator=Gtk.SeparatorToolItem()
+        self.toolbar.insert(separator,-1)
+
+        self.refresh_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refresh_toolbutton.connect("clicked",self.on_refresh_clicked)
+        self.toolbar.insert(self.refresh_toolbutton,-1)
         
         self.pack_start(self.toolbar,False,False,0)
 
@@ -486,10 +500,11 @@ class GrowlogView(Gtk.Box):
         self.title_label.show()
         if row[1]:
             self.flower_toolbutton.set_sensitive(False)
-            self.flower_on=datetime.date(*tuple(row[1].split('-')))
+            self.flower_on=datetime.date(*tuple((int(i) for i in row[1].split('-'))))
 
         if row[2]:
             self.finished=True
+            self.finish_toolbutton.set_sensitive(False)
             datestr,timestr=row[2].split(' ')
             year,month,day=datestr.split('-')
             hour,minute,second=datestr.split(':')
@@ -504,6 +519,9 @@ class GrowlogView(Gtk.Box):
         self.treeview.set_model(self.__create_model(dbcon))
         self.show()
 
+    def on_refresh_clicked(self,toolbutton):
+        self.refresh(self.get_toplevel().dbcon)
+        
     def on_treeview_selection_changed(self,selection):
         if not self.finished:
             model,iter=selection.get_selected()
@@ -536,6 +554,22 @@ class GrowlogView(Gtk.Box):
         dialog.hide()
         dialog.destroy()
 
+    def on_finish_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        dialog=Gtk.MessageDialog(parent=window,
+                                 flags=Gtk.DialogFlags.MODAL,
+                                 message_type=Gtk.MessageType.INFO,
+                                 buttons=Gtk.ButtonsType.YES_NO,
+                                 message_format=_("Do you really want to finish that Growlog? You will no longer be able to add,remove or edit Growlog-entries!"))
+        result=dialog.run()
+        if result==Gtk.ResponseType.YES:
+            now=datetime.datetime.now()
+            now_str=now.strftime("%Y-%m-%d %H:%M:%S")
+            window.dbcon.execute("UPDATE growlog SET finished_on=? WHERE id=?;"
+                                 (now_str,self.id))
+        dialog.hide()
+        dialog.destroy()
+        
     def on_edit_log_entry_clicked(self,toolbutton):
         model,iter=self.treeview.get_selection().get_selected()
         if model and iter:
