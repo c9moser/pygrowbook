@@ -208,10 +208,10 @@ class AppWindowHandle(object):
             child=None
             
         if child and child.type=='StrainView':
-            dialog=strain.EditStrainDialog(self.window,self.dbcon,child.id)
+            dialog=strain.StrainDialog(self.window,self.dbcon,child.id)
             result=dialog.run()
             if result==Gtk.ResponseType.APPLY:
-                child.refresh()
+                child.refresh(self.dbcon)
                 child.show()
             dialog.hide()
             dialog.destroy()

@@ -14,6 +14,6 @@ setup(name='GrowBook',
       author='Christian Moser',
       packages=['growbook','growbook.i18n'],
       package_dir={'growbook':'growbook','growbook.i18n':'growbook/i18n'},
-      package_data={'growbook':['*.ui','*.sql']})
+      package_data={'growbook':['*.ui','*.sql','*.svg']})
     
 

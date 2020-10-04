@@ -14,14 +14,20 @@
 ################################################################################
 
 import gi
-from gi.repository import Gtk,Pango,Gdk
+from gi.repository import Gtk,Pango,Gdk,GdkPixbuf
 import sqlite3
 import os
 import datetime
 import strain 
 import i18n; _=i18n.gettext
 
-(GROWLOG_UI,)=(os.path.join(os.path.dirname(__file__),'growlog.ui'),)
+(
+    GROWLOG_UI,
+    FLOWER_ICON
+)=(
+    os.path.join(os.path.dirname(__file__),'growlog.ui'),
+    os.path.join(os.path.dirname(__file__),'flower-icon.svg')
+)
 
 class NewGrowlogDialogHandle(object):
     def __init__(self,parent,dbcon):
@@ -278,10 +284,10 @@ def GrowlogEntryDialog(parent,dbcon,id=0,growlog_id=0):
     return handler.dialog
 
 
-class GrowlogView(Gtk.ScrolledWindow):
+class GrowlogView(Gtk.Box):
     (type,)=('Growlog',)
     def __init__(self,dbcon,id):
-        Gtk.ScrolledWindow.__init__(self)
+        Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL)
         self.id=id
 
         cursor=dbcon.execute("SELECT title,created_on,flower_on,finished_on FROM growlog WHERE id=?",(id,))
@@ -310,7 +316,52 @@ class GrowlogView(Gtk.ScrolledWindow):
         else:
             self.finished=False
             self.finished_on=None
-            
+
+
+        # Toolbar
+        self.toolbar=Gtk.Toolbar()
+        self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+        
+        self.edit_growlog_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_EDIT)
+        self.edit_growlog_toolbutton.connect('clicked',self.on_edit_growlog_clicked)
+        self.toolbar.insert(self.edit_growlog_toolbutton,-1)
+
+        valid,width,height=Gtk.icon_size_lookup(Gtk.IconSize.SMALL_TOOLBAR)
+        pixbuf=GdkPixbuf.Pixbuf.new_from_file_at_scale(FLOWER_ICON,
+                                                       width,
+                                                       height,
+                                                       False)
+        image=Gtk.Image.new_from_pixbuf(pixbuf)
+        self.flower_toolbutton=Gtk.ToolButton.new(image,_("Flowering"))
+        self.flower_toolbutton.connect('clicked',self.on_flower_clicked)
+        if self.flower_on:
+            self.flower_toolbutton.set_sensitive(False)
+        self.toolbar.insert(self.flower_toolbutton,-1)
+
+        separator=Gtk.SeparatorToolItem.new()
+        self.toolbar.insert(separator,-1)
+
+        self.new_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_ADD)
+        self.new_log_entry_toolbutton.connect('clicked',self.on_new_log_entry_clicked)
+        if self.finished:
+            self.new_log_entry_toolbutton.set_sensitive(False)
+        self.toolbar.insert(self.new_log_entry_toolbutton,-1)
+
+        #
+        self.edit_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_EDIT)
+        self.edit_log_entry_toolbutton.connect('clicked',self.on_edit_log_entry_clicked)
+        self.edit_log_entry_toolbutton.set_sensitive(False)
+        self.toolbar.insert(self.edit_log_entry_toolbutton,-1)
+
+        self.remove_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REMOVE)
+        self.remove_log_entry_toolbutton.connect('clicked',self.on_remove_log_entry_clicked)
+        self.remove_log_entry_toolbutton.set_sensitive(False)
+        self.toolbar.insert(self.remove_log_entry_toolbutton,-1)
+        
+        self.pack_start(self.toolbar,False,False,0)
+
+        # View
+        self.scrolled_window=Gtk.ScrolledWindow()
         viewport=Gtk.Viewport()
         self.vbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
@@ -345,11 +396,12 @@ class GrowlogView(Gtk.ScrolledWindow):
         self.treeview.append_column(column)
 
         self.treeview.connect('row_activated',self.on_treeview_row_activated)
-        
+        self.treeview.get_selection().connect('changed',self.on_treeview_selection_changed)
         self.vbox.pack_start(self.treeview,True,True,3)
         
         viewport.add(self.vbox)
-        self.add(viewport)
+        self.scrolled_window.add(viewport)
+        self.pack_start(self.scrolled_window,True,True,0)
 
     def __create_strainview_model(self,dbcon):
         model=Gtk.ListStore(int,int,str,str)
@@ -428,15 +480,102 @@ class GrowlogView(Gtk.ScrolledWindow):
         return model
 
     def refresh(self,dbcon):
-        cursor=dbcon.execute("SELECT title FROM growlog WHERE id=?;",(self.id,))
+        cursor=dbcon.execute("SELECT title,flower_on,finished_on FROM growlog WHERE id=?;",(self.id,))
         row=cursor.fetchone()
         self.title_label.set_text(row[0])
         self.title_label.show()
+        if row[1]:
+            self.flower_toolbutton.set_sensitive(False)
+            self.flower_on=datetime.date(*tuple(row[1].split('-')))
+
+        if row[2]:
+            self.finished=True
+            datestr,timestr=row[2].split(' ')
+            year,month,day=datestr.split('-')
+            hour,minute,second=datestr.split(':')
+            self.finished_on=datetime.datetime(year,month,day,hour,minute,second)
+            self.new_log_entry_toolbutton.set_sensitive(False)
+            
+        self.edit_log_entry_toolbutton.set_sensitive(False)
+        self.remove_log_entry_toolbutton.set_sensitive(False)
+        
         self.textview.set_buffer(self.__create_textbuffer(dbcon))
         self.strain_view.set_model(self.__create_strainview_model(dbcon))
         self.treeview.set_model(self.__create_model(dbcon))
         self.show()
 
+    def on_treeview_selection_changed(self,selection):
+        if not self.finished:
+            model,iter=selection.get_selected()
+            if model and iter:
+                self.edit_log_entry_toolbutton.set_sensitive(True)
+                self.remove_log_entry_toolbutton.set_sensitive(True)
+        
+    def on_edit_growlog_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        dialog=EditGrowlogDialog(window,window.dbcon,self.id)
+        result=dialog.run()
+        if result == Gtk.ResponseType.APPLY:
+            self.refresh(window.dbcon)
+        dialog.hide()
+        dialog.destroy()
+
+    def on_flower_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        date=datetime.date.today()
+        dialog=Gtk.MessageDialog(window,
+                                 flags=Gtk.DialogFlags.MODAL,
+                                 message_type=Gtk.MessageType.INFO,
+                                 buttons=Gtk.ButtonsType.YES_NO,
+                                 message_format=_("Do you want to set flowering date to '{0}'?").format(date.isoformat()))
+        result=dialog.run()
+        if result==Gtk.ResponseType.YES:
+            window.dbcon.execute("UPDATE growlog SET flower_on=? WHERE id=?;",
+                                 (date.isoformat(),self.id))
+            window.dbcon.commit()
+        dialog.hide()
+        dialog.destroy()
+
+    def on_edit_log_entry_clicked(self,toolbutton):
+        model,iter=self.treeview.get_selection().get_selected()
+        if model and iter:
+            row=model[iter]
+            window=self.get_toplevel()
+            dialog=GrowlogEntryDialog(window,window.dbcon,row[0])
+            result=dialog.run()
+            if result==Gtk.ResponseType.APPLY:
+                self.refresh(window.dbcon)
+            dialog.hide()
+            dialog.destroy()
+
+    def on_new_log_entry_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        dialog=GrowlogEntryDialog(window,window.dbcon,growlog_id=self.id)
+        result=dialog.run()
+        if result==Gtk.ResponseType.APPLY:
+            self.refresh(window.dbcon)
+        dialog.hide()
+        dialog.destroy()
+            
+    def on_remove_log_entry_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        model,iter=self.treeview.get_selection().get_selected()
+        if model and iter:
+            row=model[iter]
+            dialog=Gtk.MessageDialog(parent=window,
+                                     flags=Gtk.DialogFlags.MODAL,
+                                     buttons=Gtk.ButtonsType.YES_NO,
+                                     message_type=Gtk.MessageType.INFO,
+                                     message_format=_("Do you really want to delete the selected growlog entry?"))
+            result=dialog.run()
+            if result==Gtk.ResponseType.YES:
+                window.dbcon.execute("DELETE FROM growlog_entry WHERE id=?;",
+                                     (row[0],))
+                window.dbcon.commit()
+                self.refresh(window.dbcon)
+            dialog.hide()
+            dialog.destroy()
+        
     def on_strain_view_row_activated(self,tv,path,column):
         window=self.get_toplevel()
         model=tv.get_model()

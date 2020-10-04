@@ -366,11 +366,22 @@ class StrainView(Gtk.Box):
     (type,)=('StrainView',)
     def __init__(self,dbcon,id):
         Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL)
+        self.id=id
 
+        self.breeder_homepage=''
         self.homepage=''
         self.seedfinder=''
         
         self.toolbar=Gtk.Toolbar()
+        self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
+
+        self.breeder_homepage_button=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
+        self.breeder_homepage_button.connect('clicked',self.on_breeder_homepage_clicked)
+        self.toolbar.insert(self.breeder_homepage_button,-1)
+
+        separator=Gtk.SeparatorToolItem()
+        self.toolbar.insert(separator,-1)
+        
         self.seedfinder_button=Gtk.ToolButton.new_from_stock(Gtk.STOCK_FILE)
         self.seedfinder_button.connect('clicked', self.on_seedfinder_clicked)
         self.toolbar.insert(self.seedfinder_button,-1)
@@ -382,7 +393,7 @@ class StrainView(Gtk.Box):
         self.pack_start(self.toolbar,False,False,0)
         
         self.scrolled_window=Gtk.ScrolledWindow()
-        self.id=id
+        
         self.view=Gtk.TextView()
         self.view.set_editable(False)
         self.view.set_wrap_mode(Gtk.WrapMode.WORD)
@@ -405,6 +416,10 @@ class StrainView(Gtk.Box):
         if self.homepage:
             os.startfile(self.homepage)
             
+    def on_breeder_homepage_clicked(self,toolbutton):
+        if self.breeder_homepage:
+            os.startfile(self.breeder_homepage)
+            
     def refresh(self,dbcon):
         self.view.set_editable(True)
         buffer=Gtk.TextBuffer.new()
@@ -426,8 +441,14 @@ class StrainView(Gtk.Box):
         else:
             self.seedfinder_button.set_sensitive(False)
             
-        cursor.execute('SELECT id,name FROM breeder WHERE id=?;',(row[1],))
+        cursor.execute('SELECT id,name,homepage FROM breeder WHERE id=?;',(row[1],))
         row2=cursor.fetchone()
+
+        self.breeder_homepage=row2[2]
+        if self.breeder_homepage:
+            self.breeder_homepage_button.set_sensitive(True)
+        else:
+            self.breeder_homepage_button.set_sensitive(False)
 
         tagtable=buffer.get_tag_table()
         tag=Gtk.TextTag.new('H1')
@@ -582,6 +603,7 @@ class StrainSelector(Gtk.ScrolledWindow):
             result=dialog.run()
             if result == Gtk.ResponseType.APPLY:
                 self.refresh(dbcon)
+
 
             dialog.hide()
             dialog.destroy()
