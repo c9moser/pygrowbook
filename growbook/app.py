@@ -22,6 +22,7 @@ import growlog
 import strain
 import about
 import i18n
+import preferences
 
 _=i18n.gettext
 
@@ -37,9 +38,36 @@ class AppWindowHandle(object):
         else:
             self.dbcon=sqlite3.connect(config.config['dbfile'])
             self.dbcon.text_factory=str
-            
+
+        config.init_config(self.dbcon)
+        
         builder=Gtk.Builder.new_from_file(os.path.join(os.path.dirname(__file__),'appwindow.ui'))
         builder.connect_signals(self)
+
+        self.about_action=builder.get_object('action-aboout')
+        self.close_action=builder.get_object('action-close')
+        self.delete_growlog_entry_action=builder.get_object('action-delete-growlog-entry')
+        #self.delete_growlog_entry_action.set_sensitive(False)
+        
+        self.edit_breeder_action=builder.get_object('action-edit-breeder')
+        #self.edit_breeder_action.set_sensitive(False)
+        
+        self.edit_growlog_action=builder.get_object('action-edit-growlog')
+        #self.edit_growlog_action.set_sensitive(False)
+        
+        self.edit_growlog_entry=builder.get_object('action-edit-growlog-entry')
+        #self.edit_growlog_entry.set_sensitive(False)
+        
+        self.edit_strain_action=builder.get_object('action-edit-strain')
+        #self.edit_strain_action.set_sensitive(False)
+
+        self.new_breeder_action=builder.get_object('action-new-breeder')
+        self.new_growlog_action=builder.get_object('action-new-growlog')
+        
+        self.new_growlog_entry_action=builder.get_object('action-new-growlog-entry')
+        #self.new_growlog_entry_action.set_sensitive(False)
+        
+        
         self.window=builder.get_object('window1')
         self.window.set_title('GrowBook')
         self.window.dbcon=self.dbcon
@@ -62,6 +90,7 @@ class AppWindowHandle(object):
     
         self.window.browser=Gtk.Notebook()
         self.window.browser.set_scrollable(True)
+        
         paned.add2(self.window.browser)
 
         self.window.set_default_size(800,600)
@@ -111,7 +140,7 @@ class AppWindowHandle(object):
         self.window.browser.set_current_page(-1)
         self.window.browser.show()
         
-
+        
     def on_action_edit_growlog_entry(self,action):
         pageno=self.window.browser.get_current_page()
         if (pageno >= 0):
@@ -130,6 +159,13 @@ class AppWindowHandle(object):
         self.window.hide()
         self.window.destroy()
 
+    def on_actions_preferences(self,action):
+        dialog=preferences.PreferencesDialog(self.window,self.dbcon)
+        result=dialog.run()
+        if result == Gtk.ResponseType.APPLY:
+            pass
+        dialog.hide()
+        dialog.destroy()
     
     def on_action_new_breeder(self,action):
         dialog=strain.NewBreederDialog(self.window, self.dbcon)

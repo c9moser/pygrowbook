@@ -453,10 +453,28 @@ class GrowlogView(Gtk.Box):
 
         buffer.insert_with_tags(buffer.get_end_iter(),_("Flower on: "),tag)
         buffer.insert(buffer.get_end_iter(), "{0}\n".format(row[3]))
-        
-        buffer.insert_with_tags(buffer.get_end_iter(),_("Finished on: "),tag)
-        buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[4]))
 
+        if row[4]:
+            buffer.insert_with_tags(buffer.get_end_iter(),_("Finished on: "),tag)
+            buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[4]))
+
+        cdate_str,ctime_str=row[2].split(' ')
+        cdate=datetime.date(*tuple((int(i) for i in cdate_str.split('-'))))
+        if row[4]:
+            fdate_str,ftime_str=row[4].split(' ')
+            date=datetime.date(*tuple((int(i) for i in fdate_str.split('-'))))
+        else:
+            date=datetime.date.today()
+        delta=date-cdate
+        buffer.insert_with_tags(buffer.get_end_iter(),_("Age: "),tag)
+        buffer.insert(buffer.get_end_iter(), _("{0} days\n").format(delta.days))
+
+        if row[3]:
+            flowering=datetime.date(*tuple((int(i) for i in row[3].split('-'))))
+            delta=date-flowering
+            buffer.insert_with_tags(buffer.get_end_iter(), _("Flowering: "),tag)
+            buffer.insert(buffer.get_end_iter(),_("{0} days\n").format(delta.days))
+            
         tag=Gtk.TextTag.new('H2')
         tag.props.scale=2.0
         tag.props.weight=Pango.Weight.BOLD
