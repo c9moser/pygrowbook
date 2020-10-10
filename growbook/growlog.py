@@ -101,7 +101,6 @@ class EditGrowlogDialogHandle(object):
         self.dialog.created_on_label=builder.get_object('label9')
         self.dialog.finished_on_label=builder.get_object('label10')
         self.dialog.title_entry=builder.get_object('entry1')
-        self.dialog.finish_checkbutton=builder.get_object('checkbutton1')
         self.dialog.description_view=builder.get_object('textview1')
         self.dialog.strain_view=builder.get_object('treeview1')
         cursor=self.dbcon.execute('SELECT id,title,created_on,finished_on,description FROM growlog WHERE id=?',
@@ -114,9 +113,6 @@ class EditGrowlogDialogHandle(object):
         self.dialog.finished_on_label.set_text(row[3])
         buffer=self.dialog.description_view.get_buffer()
         buffer.set_text(row[4])
-        if row[3]:
-            self.dialog.finish_checkbutton.set_sensitive(False)        
-            self.dialog.finish_checkbutton.set_active(True)
         self.dialog.show_all()
 
         self.dialog.strain_view.set_model(self.__create_strainview_model(self.dbcon))
@@ -149,11 +145,6 @@ class EditGrowlogDialogHandle(object):
                            (self.dialog.title_entry.get_text(),
                             buffer.get_text(buffer.get_start_iter(),buffer.get_end_iter(),False),
                             int(self.dialog.id_label.get_text())))
-            if not self.dialog.finished_on_label.get_text() and self.dialog.finish_checkbutton.get_active():
-                timestamp=datetime.datetime.now()
-                cursor.execute("UPDATE growlog SET finished_on=? WHERE id=?;",
-                               (timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                                int(self.dialog.id_label.get_text())))
             self.dbcon.commit()
         except Exception as ex:
             dialog=Gtk.MessageDialog(self.dialog,
