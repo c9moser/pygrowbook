@@ -74,7 +74,7 @@ CREATE TABLE growlog_entry (
     FOREIGN KEY (growlog) REFERENCES growlog(id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-);
+);              
 
 CREATE TABLE growlog_strain (
     id INTEGER PRIMARY KEY,
