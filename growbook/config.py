@@ -25,6 +25,12 @@ config={
     'open-ongoing-growlogs':True
 }
 
+def int_to_db(value):
+    return str(value)
+
+def int_from_db(value):
+    return int(value)
+    
 def bool_to_db(value):
         if value:
             return "yes"
