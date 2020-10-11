@@ -20,6 +20,7 @@ import os
 import datetime
 import strain 
 import i18n; _=i18n.gettext
+from collections import namedtuple
 
 (
     GROWLOG_UI,
@@ -272,7 +273,7 @@ class GrowlogEntryDialogHandle(object):
 
 def GrowlogEntryDialog(parent,dbcon,id=0,growlog_id=0):
     handler=GrowlogEntryDialogHandle(parent,dbcon,id,growlog_id)
-    return handler.dialog
+    return handler.dialog        
 
 
 class GrowlogView(Gtk.Box):
@@ -355,10 +356,10 @@ class GrowlogView(Gtk.Box):
         self.remove_log_entry_toolbutton.connect('clicked',self.on_remove_log_entry_clicked)
         self.remove_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.remove_log_entry_toolbutton,-1)
-
+        
         separator=Gtk.SeparatorToolItem()
         self.toolbar.insert(separator,-1)
-
+        
         self.refresh_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
         self.refresh_toolbutton.connect("clicked",self.on_refresh_clicked)
         self.toolbar.insert(self.refresh_toolbutton,-1)
