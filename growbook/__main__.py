@@ -21,15 +21,16 @@ from gi.repository import Gtk
 
 import i18n
 import app
+import growbook
 
 def main():
-    #apphandle=app.AppWindowHandle()
-    #window=apphandle.window
     i18n.init()
-    window=app.AppWindow()
-    window.show_all()
-    Gtk.main()
-    
-    
+    if not growbook.window:
+        growbook.window=app.AppWindow()
+        growbook.window.show_all()
+        Gtk.main()
+    else:
+        growbook.window.present()
+
 if __name__ == '__main__':
     main()

@@ -17,4 +17,7 @@ import gi
 gi.require_version('Gtk','3.0')
 from gi.repository import Gtk
 
+print("__init__.py")
+
+window=None
 

@@ -43,7 +43,8 @@ def bool_from_db(value):
 
 def _check_db_version(db_version):
         dbv=config['db-version']
-        if db_version[0] >= dbv[0] and db_version[1] >= dbv[0]:
+        if (db_version[0] > dbv[0] or 
+            (db_version[0] == dbv[0] and db_version[1] >= dbv[0])):
             return True
         return False
         
@@ -56,7 +57,7 @@ def init_config(dbcon):
                            ("open-ongoing-growlogs",bool_to_db(config['open-ongoing-growlogs']),)])
         dbcon.commit()
     else:
-        db_version=tuple(row[1].split('.'))
+        db_version=tuple((int(i) for i in row[1].split('.')))
         if not _check_db_version(db_version):
             pass
 
