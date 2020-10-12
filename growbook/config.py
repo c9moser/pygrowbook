@@ -25,6 +25,16 @@ config={
     'open-ongoing-growlogs':True
 }
 
+(
+    _SQL_SELECT_CONFIG,
+    _SQL_INSERT_CONFIG,
+    _SQL_UPDATE_CONFIG
+)=(
+    "SELECT key,value FROM config WHERE key=?;",
+    "INSERT INTO config (key,value) VALUES (?,?);",
+    "UPDATE config SET value=? WHERE key=?;"
+)
+
 def int_to_db(value):
     return str(value)
 
@@ -48,11 +58,11 @@ def _check_db_version(db_version):
             return True
         return False
         
-def init_config(dbcon):     
-    cursor=dbcon.execute("SELECT key,value FROM config WHERE key=?;",('db-version',))
+def init_config(dbcon): 
+    cursor=dbcon.execute(_SQL_SELECT_CONFIG,('db-version',))
     row=cursor.fetchone()
     if not row:    
-        dbcon.executemany("INSERT INTO config (key,value) VALUES (?,?);",
+        dbcon.executemany(_SQL_INSERT_CONFIG,
                           [("db-version",'.'.join((str(i) for i in config['db-version']))),
                            ("open-ongoing-growlogs",bool_to_db(config['open-ongoing-growlogs']),)])
         dbcon.commit()
@@ -63,12 +73,12 @@ def init_config(dbcon):
 
         config['db-version']=db_version
         
-        cursor=dbcon.execute('SELECT key,value FROM config WHERE key=?;',('open-ongoing-growlogs',))
+        cursor=dbcon.execute(_SQL_SELECT_CONFIG,('open-ongoing-growlogs',))
         row=cursor.fetchone()
         config[row[0]]=bool_from_db(row[1])
 
 def save_config(dbcon):
-    dbcon.executemany("UPDATE config SET value=? WHERE key=?;",
+    dbcon.executemany(_SQL_UPDATE_CONFIG,
                       [(bool_to_db(config['open-ongoing-growlogs']),'open-ongoing-growlogs')])
     dbcon.commit()
 
