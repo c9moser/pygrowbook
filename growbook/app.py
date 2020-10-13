@@ -23,6 +23,7 @@ import strain
 import about
 import i18n
 import preferences
+import tools
 
 _=i18n.gettext
 
@@ -119,6 +120,7 @@ class AppWindowHandle(object):
             pageno=self.window.browser.page_num(child)
             self.window.browser.remove_page(pageno)
 
+        # tab with close-button
         hbox=Gtk.HBox()
         hbox.pack_start(child.title_label,False,False,0)
 
@@ -331,7 +333,11 @@ class AppWindowHandle(object):
         if pageno >= 0:
             self.window.browser.remove_page(pageno)
             self.window.browser.show()
-    
+
+    def on_action_ventilation_calculator(self,action):
+        page=tools.VentilationCalculator(self.dbcon)
+        self.add_browser_page(page)
+        
     def on_destroy(self,window):
         self.window.handler=None
         self.window=None
