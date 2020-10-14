@@ -62,10 +62,6 @@ class VentilationCalculator(Gtk.Grid):
         self.buffer_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.buffer_spinbutton,1,4,1,1)
 
-        #self.calc_button=Gtk.Button.new_with_label(_("Calculate"))
-        #self.calc_button.connect('clicked',self.on_calculate_clicked)
-        #self.attach(self.calc_button,1,5,1,1)
-
         label=Gtk.Label(_("Recommended capacity:"))
         self.attach(label,0,5,1,1)
         self.result_label=Gtk.Label()
