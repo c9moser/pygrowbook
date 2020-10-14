@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # growbook/tools.py
 ################################################################################
 # Copyright (C) 2020  Christian Moser                                          #
@@ -89,7 +90,7 @@ class VentilationCalculator(Gtk.Grid):
 
         value=(width*height*depth*1.35 + tubelength)*60/3*buffer
 
-        self.result_label.set_text("{0} m3/h".format(str(value)))
+        self.result_label.set_text("{0} m³/h".format(str(value)))
         self.result_label.show()
 
         

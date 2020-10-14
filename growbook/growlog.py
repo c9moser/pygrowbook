@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # growbook/growlog.py
 ################################################################################
 # Copyright (C) 2020  Christian Moser                                          #

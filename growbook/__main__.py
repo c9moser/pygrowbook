@@ -1,4 +1,5 @@
-#! /bin/env python
+#!/bin/env python
+# -*- coding: utf-8 -*-
 # growbook/__main__.py
 ################################################################################
 # Copyright (C) 2020  Christian Moser                                          #
