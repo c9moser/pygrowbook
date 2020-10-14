@@ -28,6 +28,7 @@ class VentilationCalculator(Gtk.Grid):
         Gtk.Grid.__init__(self)
 
         label=Gtk.Label(_("Width [m]:"))
+        label.set_xalign(0.0)
         self.attach(label,0,0,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.width_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
@@ -35,6 +36,7 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(self.width_spinbutton,1,0,1,1)
 
         label=Gtk.Label(_("Depth [m]:"))
+        label.set_xalign(0.0)
         self.attach(label,0,1,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.depth_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
@@ -42,6 +44,7 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(self.depth_spinbutton,1,1,1,1)
 
         label=Gtk.Label(_("Height [m]:"))
+        label.set_xalign(0.0)
         self.attach(label,0,2,1,1)
         adjustment=Gtk.Adjustment.new(2.0,0.1,100.0,0.1,1.0,10.0)
         self.height_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
@@ -49,6 +52,7 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(self.height_spinbutton,1,2,1,1)
 
         label=Gtk.Label(_("Tube length [m]:"))
+        label.set_xalign(0.0)
         self.attach(label,0,3,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.tubelength_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
@@ -56,6 +60,7 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(self.tubelength_spinbutton,1,3,1,1)
 
         label=Gtk.Label(_("Buffer:"))
+        label.set_xalign(0.0)
         self.attach(label,0,4,1,1)
         adjustment=Gtk.Adjustment.new(2.0,0.1,100.0,0.1,1.0,10.0)
         self.buffer_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
@@ -63,8 +68,10 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(self.buffer_spinbutton,1,4,1,1)
 
         label=Gtk.Label(_("Recommended capacity:"))
+        label.set_xalign(0.0)
         self.attach(label,0,5,1,1)
         self.result_label=Gtk.Label()
+        self.result_label.set_xalign(0.5)
         self.attach(self.result_label,1,5,1,1)
 
         self.calculate()
