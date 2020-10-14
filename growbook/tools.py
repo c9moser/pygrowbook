@@ -31,44 +31,53 @@ class VentilationCalculator(Gtk.Grid):
         self.attach(label,0,0,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.width_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
+        self.width_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.width_spinbutton,1,0,1,1)
 
         label=Gtk.Label(_("Depth [m]:"))
         self.attach(label,0,1,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.depth_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
+        self.depth_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.depth_spinbutton,1,1,1,1)
 
         label=Gtk.Label(_("Height [m]:"))
         self.attach(label,0,2,1,1)
         adjustment=Gtk.Adjustment.new(2.0,0.1,100.0,0.1,1.0,10.0)
         self.height_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
+        self.height_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.height_spinbutton,1,2,1,1)
 
         label=Gtk.Label(_("Tube length [m]:"))
         self.attach(label,0,3,1,1)
         adjustment=Gtk.Adjustment.new(1.0,0.1,100.0,0.1,1.0,10.0)
         self.tubelength_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
+        self.tubelength_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.tubelength_spinbutton,1,3,1,1)
 
         label=Gtk.Label(_("Buffer:"))
         self.attach(label,0,4,1,1)
         adjustment=Gtk.Adjustment.new(2.0,0.1,100.0,0.1,1.0,10.0)
         self.buffer_spinbutton=Gtk.SpinButton.new(adjustment,0.1,1)
+        self.buffer_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         self.attach(self.buffer_spinbutton,1,4,1,1)
 
-        self.calc_button=Gtk.Button.new_with_label(_("Calculate"))
-        self.calc_button.connect('clicked',self.on_calculate_clicked)
-        self.attach(self.calc_button,1,5,1,1)
+        #self.calc_button=Gtk.Button.new_with_label(_("Calculate"))
+        #self.calc_button.connect('clicked',self.on_calculate_clicked)
+        #self.attach(self.calc_button,1,5,1,1)
 
         label=Gtk.Label(_("Recommended capacity:"))
-        self.attach(label,0,6,1,1)
+        self.attach(label,0,5,1,1)
         self.result_label=Gtk.Label()
-        self.attach(self.result_label,1,6,1,1)
-        
+        self.attach(self.result_label,1,5,1,1)
+
+        self.calculate()
         self.show_all()
 
-    def on_calculate_clicked(self,button):
+    def on_spinbutton_value_changed(self,spinbutton):
+        self.calculate()
+        
+    def calculate(self):
         width=self.width_spinbutton.get_value()
         height=self.height_spinbutton.get_value()
         depth=self.depth_spinbutton.get_value()
