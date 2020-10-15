@@ -378,6 +378,7 @@ class StrainView(Gtk.Box):
         self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
 
         self.breeder_homepage_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
+        self.breeder_homepage_toolbutton.set_tooltip_text(_("Breeder Homepage"))
         self.breeder_homepage_toolbutton.connect('clicked',self.on_breeder_homepage_clicked)
         self.toolbar.insert(self.breeder_homepage_toolbutton,-1)
 
@@ -385,10 +386,12 @@ class StrainView(Gtk.Box):
         self.toolbar.insert(separator,-1)
         
         self.seedfinder_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_FILE)
+        self.seedfinder_toolbutton.set_tooltip_text(_("SeedFinder.eu"))
         self.seedfinder_toolbutton.connect('clicked', self.on_seedfinder_clicked)
         self.toolbar.insert(self.seedfinder_toolbutton,-1)
 
         self.homepage_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_HOME)
+        self.homepage_toolbutton.set_tooltip_text(_("Strain homepage"))
         self.homepage_toolbutton.connect('clicked', self.on_homepage_clicked)
         self.toolbar.insert(self.homepage_toolbutton,-1)
 
@@ -396,6 +399,7 @@ class StrainView(Gtk.Box):
         self.toolbar.insert(separator,-1)
         
         self.refresh_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refresh_toolbutton.set_tooltip_text(_("Refresh view."))
         self.refresh_toolbutton.connect('clicked', self.on_refresh_clicked)
         self.toolbar.insert(self.refresh_toolbutton,-1)
         

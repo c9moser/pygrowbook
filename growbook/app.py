@@ -89,7 +89,6 @@ class AppWindowHandle(object):
 
         paned.add1(self.window.selector)
 
-    
         self.window.browser=Gtk.Notebook()
         self.window.browser.set_scrollable(True)
         
@@ -130,10 +129,6 @@ class AppWindowHandle(object):
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_focus_on_click(False)
         button.add(close_image)
-        #style=Gtk.RcStyle()
-        #style.xthickness=0
-        #style.ythickness=0
-        #button.modify_style(style)
         button.connect('clicked',on_title_close,child)
         hbox.pack_start(button,False,False,0)
 
@@ -142,21 +137,6 @@ class AppWindowHandle(object):
         self.window.browser.append_page(child,hbox)
         self.window.browser.set_current_page(-1)
         self.window.browser.show()
-        
-        
-    def on_action_edit_growlog_entry(self,action):
-        pageno=self.window.browser.get_current_page()
-        if (pageno >= 0):
-            child=self.window.browser.get_nth_page(pageno)
-        if child and child.type=='Growlog':
-            model,iter=child.treeview.get_selection().get_selected()
-            if model and iter:
-                dialog=growlog.GrowlogEntryDialog(self.window,self.dbcon,model[iter][0])
-                result=dialog.run()
-                if result==Gtk.ResponseType.APPLY:
-                    child.refresh(self.dbcon)
-                dialog.hide()
-                dialog.destroy()
         
     def on_action_quit(self,action):
         self.window.hide()
@@ -297,7 +277,21 @@ class AppWindowHandle(object):
                 child.refresh(self.dbcon)
             dialog.hide()
             dialog.destroy()
-            
+
+    def on_action_edit_growlog_entry(self,action):
+        pageno=self.window.browser.get_current_page()
+        if (pageno >= 0):
+            child=self.window.browser.get_nth_page(pageno)
+        if child and child.type=='Growlog':
+            model,iter=child.treeview.get_selection().get_selected()
+            if model and iter:
+                dialog=growlog.GrowlogEntryDialog(self.window,self.dbcon,model[iter][0])
+                result=dialog.run()
+                if result==Gtk.ResponseType.APPLY:
+                    child.refresh(self.dbcon)
+                dialog.hide()
+                dialog.destroy()
+                
     def on_action_delete_growlog_entry(self,action):
         pageno=self.window.browser.get_current_page()
         if pageno >= 0:

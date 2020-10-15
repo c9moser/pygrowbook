@@ -316,6 +316,7 @@ class GrowlogView(Gtk.Box):
         self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         
         self.edit_growlog_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_EDIT)
+        self.edit_growlog_toolbutton.set_tooltip_text(_("Edit Growlog."))
         self.edit_growlog_toolbutton.connect('clicked',self.on_edit_growlog_clicked)
         self.toolbar.insert(self.edit_growlog_toolbutton,-1)
 
@@ -326,12 +327,14 @@ class GrowlogView(Gtk.Box):
                                                        False)
         image=Gtk.Image.new_from_pixbuf(pixbuf)
         self.flower_toolbutton=Gtk.ToolButton.new(image,_("Flowering"))
+        self.flower_toolbutton.set_tooltip_text(_("Start flowering."))
         self.flower_toolbutton.connect('clicked',self.on_flower_clicked)
         if self.flower_on:
             self.flower_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.flower_toolbutton,-1)
 
         self.finish_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_STOP)
+        self.finish_toolbutton.set_tooltip_text(_("Finish Growlog"))
         self.finish_toolbutton.connect('clicked',self.on_finish_clicked)
         if self.finished:
             self.finish_toolbutton.set_sensitive(False)
@@ -343,17 +346,20 @@ class GrowlogView(Gtk.Box):
 
         self.new_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_ADD)
         self.new_log_entry_toolbutton.connect('clicked',self.on_new_log_entry_clicked)
+        self.new_log_entry_toolbutton.set_tooltip_text(_("New Growlog-entry."))
         if self.finished:
             self.new_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.new_log_entry_toolbutton,-1)
 
         #
         self.edit_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_EDIT)
+        self.edit_log_entry_toolbutton.set_tooltip_text(_("Edit selected Growlog-entry."))
         self.edit_log_entry_toolbutton.connect('clicked',self.on_edit_log_entry_clicked)
         self.edit_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.edit_log_entry_toolbutton,-1)
 
         self.remove_log_entry_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REMOVE)
+        self.remove_log_entry_toolbutton.set_tooltip_text(_("Delete selected Growlog-entry."))
         self.remove_log_entry_toolbutton.connect('clicked',self.on_remove_log_entry_clicked)
         self.remove_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.remove_log_entry_toolbutton,-1)
@@ -362,6 +368,7 @@ class GrowlogView(Gtk.Box):
         self.toolbar.insert(separator,-1)
         
         self.refresh_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
+        self.refresh_toolbutton.set_tooltip_text(_("Refresh Grwolog."))
         self.refresh_toolbutton.connect("clicked",self.on_refresh_clicked)
         self.toolbar.insert(self.refresh_toolbutton,-1)
         
@@ -440,7 +447,9 @@ class GrowlogView(Gtk.Box):
         tag=Gtk.TextTag.new('H3')
         tag.props.weight=Pango.Weight.BOLD
         tagtable.add(tag)
-
+        buffer.insert_with_tags(buffer.get_end_iter(), _("ID: "),tag)
+        buffer.insert(buffer.get_end_iter(), "{0}\n".format(self.id))
+        
         buffer.insert_with_tags(buffer.get_end_iter(),_("Created on: "),tag)
         buffer.insert(buffer.get_end_iter(),"{0}\n".format(row[2]))
 
