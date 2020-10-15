@@ -41,6 +41,12 @@ def int_to_db(value):
 
 def int_from_db(value):
     return int(value)
+
+def float_to_db(value):
+    return str(value)
+
+def float_from_db(value):
+    return float(value)
     
 def bool_to_db(value):
         if value:
