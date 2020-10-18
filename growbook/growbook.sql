@@ -15,7 +15,7 @@
 *******************************************************************************/
 
 BEGIN TRANSACTION;
-PRAGMA encoding='UTF-8'
+PRAGMA encoding='UTF-8';
 
 CREATE TABLE config (
     id  INTEGER PRIMARY KEY,

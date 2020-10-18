@@ -21,6 +21,7 @@ import os
 import datetime
 import strain 
 import i18n; _=i18n.gettext
+import tools
 from collections import namedtuple
 
 (
@@ -274,8 +275,9 @@ class GrowlogEntryDialogHandle(object):
 
 def GrowlogEntryDialog(parent,dbcon,id=0,growlog_id=0):
     handler=GrowlogEntryDialogHandle(parent,dbcon,id,growlog_id)
-    return handler.dialog        
-
+    return handler.dialog
+                            
+                            
 
 class GrowlogView(Gtk.Box):
     (type,)=('Growlog',)
@@ -363,6 +365,14 @@ class GrowlogView(Gtk.Box):
         self.remove_log_entry_toolbutton.connect('clicked',self.on_remove_log_entry_clicked)
         self.remove_log_entry_toolbutton.set_sensitive(False)
         self.toolbar.insert(self.remove_log_entry_toolbutton,-1)
+        
+        separator=Gtk.SeparatorToolItem()
+        self.toolbar.insert(separator,-1)
+
+        self.flowering_date_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_INFO)
+        self.flowering_date_toolbutton.set_tooltip_text(_("Calculate end of flowering date."))
+        self.flowering_date_toolbutton.connect('clicked',self.on_flowering_date_clicked)
+        self.toolbar.insert(self.flowering_date_toolbutton,-1)
         
         separator=Gtk.SeparatorToolItem()
         self.toolbar.insert(separator,-1)
@@ -659,7 +669,7 @@ class GrowlogView(Gtk.Box):
                 window=self.get_toplevel()
                 menu=window.growlog_entry_popup
                 menu.popup(None,None,None,None,event.button,event.time)
-        
+
     def on_action_growlog_entry_new(self,action):
         if not self.finished:
             window=self.get_toplevel()
@@ -713,7 +723,14 @@ class GrowlogView(Gtk.Box):
                 dialog.hide()
                 dialog.destroy()
 
-
+    def on_flowering_date_clicked(self,toolbutton):
+        dialog=tools.FloweringDateDialog(self.get_toplevel(),self.flower_on)
+        result=dialog.run()
+        if result==Gtk.ResponseType.OK:
+            pass
+        dialog.hide()
+        dialog.destroy()
+        
 class GrowlogSelector(Gtk.ScrolledWindow):
     def __init__(self,dbcon):
         Gtk.ScrolledWindow.__init__(self)
