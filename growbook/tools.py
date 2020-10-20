@@ -19,7 +19,7 @@ from gi.repository import Gtk
 import datetime
 import i18n
 _=i18n.gettext
-
+from collections import namedtuple
 
 class VentilationCalculator(Gtk.Grid):
     (type,)=("VentilationCalculator",)
@@ -93,6 +93,7 @@ class VentilationCalculator(Gtk.Grid):
         self.result_label.set_text("{0} m³/h".format(str(value)))
         self.result_label.show()
 
+
 class FloweringDateDialog(Gtk.Dialog):
     def __init__(self,parent,flowering_start=None):
         Gtk.Dialog.__init__(self,
@@ -136,4 +137,4 @@ class FloweringDateDialog(Gtk.Dialog):
         finish_on=self.flowering_start + delta
         self.finish_on_label.set_text(finish_on.isoformat())
 
-
+        

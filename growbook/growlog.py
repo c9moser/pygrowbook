@@ -275,10 +275,113 @@ class GrowlogEntryDialogHandle(object):
 
 def GrowlogEntryDialog(parent,dbcon,id=0,growlog_id=0):
     handler=GrowlogEntryDialogHandle(parent,dbcon,id,growlog_id)
-    return handler.dialog
-                            
-                            
+    return handler.dialog                  
 
+GrowlogCalendarEntry=namedtuple('GrowlogCalendarEntry','time entry')
+
+class GrowlogCalendar(Gtk.Calendar):
+    def __init__(self,dbcon,growlog_id):
+        Gtk.Calendar.__init__(self)
+        self.dbcon=dbcon
+        self.id=growlog_id
+        self.dates={}
+
+        cursor=self.dbcon.execute("SELECT created_on,flower_on,finished_on FROM growlog WHERE id=?;",(self.id,))
+        row=cursor.fetchone()
+        date_str,time_str=row[0].split(' ')
+        date=datetime.date(*tuple((int(i) for i in date_str.split('-'))))
+        time=datetime.time(*tuple((int(i) for i in time_str.split(':'))))
+        self.created_on=datetime.datetime(date.year,date.month,date.day,
+                                          time.hour,time.minute,time.second)
+        self.dates[date]=[GrowlogCalendarEntry(time,_("Grow started"))]
+        if row[1]:
+            self.flower_on=datetime.date(*tuple((int(i) for i in row[1].split('-'))))
+            self.dates[self.flower_on]=[GrowlogCalendarEntry(datetime.time(0,0,0),_("Begin flowering"))]
+        else:
+            self.flower_on=None
+
+        if row[2]:
+            date_str,time_str=row[2].split(' ')
+            date=datetime.date(*tuple((int(i) for i in date_str.split('-'))))
+            time=datetime.time(*tuple((int(i) for i in time_str.split(':'))))
+            self.finished_on=datetime.datetime(date.year,date.month,date.day,
+                                               time.hour,time.minute,time.second)
+            self.dates[date]=[GrowlogCalendarEntry(time,_("Finished grow."))]
+        else:
+            self.finished_on=None
+
+        cursor=self.dbcon.execute("SELECT created_on,entry FROM growlog_entry WHERE growlog=? ORDER BY created_on;",(self.id,))
+        for row in cursor:
+            date_str,time_str=row[0].split(' ')
+            date=datetime.date(*tuple((int(i) for i in date_str.split('-'))))
+            time=datetime.time(*tuple((int(i) for i in time_str.split(':'))))
+            if date in self.dates.keys():
+                entry_inserted=False
+                for i in xrange(len(self.dates[date])):
+                    if self.dates[date][i].time > time:
+                        self.dates[date].insert(i,GrowlogCalendarEntry(time,row[1]))
+                        entry_inserted=True
+                        break
+                if not entry_inserted:
+                    self.dates[date].append(GrowlogCalendarEntry(time,row[1]))
+            else:
+                self.dates[date]=[GrowlogCalendarEntry(time,row[1])]
+                        
+        self.select_month(self.created_on.month-1,self.created_on.year)
+        self.select_day(self.created_on.day)
+        self.do_month_changed()
+
+    def do_day_selected(self):
+        pass
+    
+    def do_month_changed(self):
+        self.clear_marks()
+        year,month,day=self.get_date()
+        for date in self.dates.iterkeys():
+            if date.year==year and date.month==month+1:
+                self.mark_day(date.day)
+
+
+class GrowlogCalendarDialog(Gtk.Dialog):
+    def __init__(self,parent,dbcon,growlog_id):
+        Gtk.Dialog.__init__(self,title=_("Growlog Calendar"),parent=parent)
+        self.set_default_size(600,400)
+        self.dbcon=dbcon
+        self.add_button("Close",Gtk.ResponseType.CLOSE)
+        
+        vbox=self.get_content_area()
+        self.calendar=GrowlogCalendar(self.dbcon,growlog_id)
+        self.calendar.connect("day-selected",self.on_calendar_day_selected)
+        vbox.pack_start(self.calendar,False,False,0)
+
+        self.treeview=Gtk.TreeView.new_with_model(self.__create_model())
+
+        renderer=Gtk.CellRendererText()
+        column=Gtk.TreeViewColumn(_("Time"),renderer,text=0)
+        self.treeview.append_column(column)
+
+        renderer=Gtk.CellRendererText()
+        column=Gtk.TreeViewColumn(_("Entry"),renderer,text=1)
+        self.treeview.append_column(column)
+
+        scrolled_window=Gtk.ScrolledWindow()
+        scrolled_window.add(self.treeview)
+        vbox.pack_start(scrolled_window,True,True,0)
+        self.show_all()
+
+    def __create_model(self):
+        model=Gtk.ListStore(str,str)
+
+        year,month,day=self.calendar.get_date()
+        if self.calendar.get_day_is_marked(day):
+            for entry in self.calendar.dates[datetime.date(year,month+1,day)]:
+                model.append([entry.time.isoformat(),entry.entry])
+        return model
+
+    def on_calendar_day_selected(self,calendar):
+        self.treeview.set_model(self.__create_model())
+        self.treeview.show()
+        
 class GrowlogView(Gtk.Box):
     (type,)=('Growlog',)
     def __init__(self,dbcon,id):
@@ -373,6 +476,11 @@ class GrowlogView(Gtk.Box):
         self.flowering_date_toolbutton.set_tooltip_text(_("Calculate end of flowering date."))
         self.flowering_date_toolbutton.connect('clicked',self.on_flowering_date_clicked)
         self.toolbar.insert(self.flowering_date_toolbutton,-1)
+
+        self.growlog_calendar_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_JUMP_TO)
+        self.growlog_calendar_toolbutton.set_tooltip_text(_("Growlog Calendar"))
+        self.growlog_calendar_toolbutton.connect('clicked',self.on_growlog_calendar_clicked)
+        self.toolbar.insert(self.growlog_calendar_toolbutton,-1)
         
         separator=Gtk.SeparatorToolItem()
         self.toolbar.insert(separator,-1)
@@ -728,6 +836,13 @@ class GrowlogView(Gtk.Box):
         result=dialog.run()
         if result==Gtk.ResponseType.OK:
             pass
+        dialog.hide()
+        dialog.destroy()
+
+    def on_growlog_calendar_clicked(self,toolbutton):
+        window=self.get_toplevel()
+        dialog=GrowlogCalendarDialog(window,window.dbcon,self.id)
+        dialog.run()
         dialog.hide()
         dialog.destroy()
         
