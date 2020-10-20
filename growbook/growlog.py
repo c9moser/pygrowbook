@@ -352,7 +352,9 @@ class GrowlogCalendarDialog(Gtk.Dialog):
         vbox=self.get_content_area()
         self.calendar=GrowlogCalendar(self.dbcon,growlog_id)
         self.calendar.connect("day-selected",self.on_calendar_day_selected)
-        vbox.pack_start(self.calendar,False,False,0)
+        hbox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        hbox.pack_start(self.calendar,False,False,0)
+        vbox.pack_start(hbox,False,False,0)
 
         self.treeview=Gtk.TreeView.new_with_model(self.__create_model())
 
