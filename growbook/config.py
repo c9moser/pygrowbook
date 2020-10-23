@@ -19,7 +19,7 @@ from gi.repository import GLib
 import os
 
 config={
-    'version':(0,0,31),
+    'version':(0,0,32),
     'db-version':(0,1),
     'datadir':os.path.join(GLib.get_user_data_dir(),'growbook'),
     'dbfile':os.path.join(GLib.get_user_data_dir(),'growbook','growbook.db'),

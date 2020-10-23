@@ -332,7 +332,30 @@ class AppWindowHandle(object):
     def on_action_ventilation_calculator(self,action):
         page=tools.VentilationCalculator(self.dbcon)
         self.add_browser_page(page)
-        
+
+    def on_action_vacuum(self,action):
+        try:
+            self.dbcon.execute("VACUUM;")
+            self.dbcon.commit()
+
+            dialog=Gtk.MessageDialog(parent=self.window,
+                                     flags=Gtk.DialogFlags.MODAL,
+                                     message_type=Gtk.MessageType.INFO,
+                                     buttons=Gtk.ButtonsType.OK,
+                                     message_format=_("'VACUUM' successfully run on database!"))
+            dialog.run()
+            dialog.hide()
+            dialog.destroy()
+        except:
+            dialog=Gtk.MessageDialog(parent=self.window,
+                                     flags=Gtk.DialogFlags.MODAL,
+                                     message_type=Gtk.MessageType.ERROR,
+                                     buttons=Gtk.ButtonsType.OK,
+                                     message_format=_("'VACUUM' failed!"))
+            dialog.run()
+            dialog.hide()
+            dialog.destroy()
+            
     def on_destroy(self,window):
         self.window.handler=None
         self.window=None

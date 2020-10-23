@@ -168,6 +168,11 @@
     <property name="stock_id">gtk-edit</property>
     <signal name="activate" handler="on_action_selector_edit_growlog" swapped="no"/>
   </object>
+  <object class="GtkAction" id="action-vacuum">
+    <property name="label" translatable="yes">Vacuum database</property>
+    <property name="stock_id">gtk-execute</property>
+    <signal name="activate" handler="on_action_vacuum" swapped="no"/>
+  </object>
   <object class="GtkAction" id="action-ventilation-calculator">
     <property name="label" translatable="yes">Ventilation Calculator</property>
     <property name="stock_id">gtk-page-setup</property>
@@ -321,6 +326,22 @@
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem19">
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">action-vacuum</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Vacuum Database</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
