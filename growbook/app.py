@@ -355,6 +355,7 @@ class AppWindowHandle(object):
             dialog.run()
             dialog.hide()
             dialog.destroy()
+
             
     def on_destroy(self,window):
         self.window.handler=None

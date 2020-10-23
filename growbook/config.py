@@ -19,7 +19,7 @@ from gi.repository import GLib
 import os
 
 config={
-    'version':(0,0,32),
+    'version':(0,0,33),
     'db-version':(0,1),
     'datadir':os.path.join(GLib.get_user_data_dir(),'growbook'),
     'dbfile':os.path.join(GLib.get_user_data_dir(),'growbook','growbook.db'),
@@ -54,9 +54,12 @@ def bool_to_db(value):
         return "no"
 
 def bool_from_db(value):
-    if value == 'yes':
+    if value in ['1','yes','True','on','y']:
         return True
-    return False
+    elif value in ['0','no','False','off','n']:
+        return False
+    raise ValueError(_("Value '{0}' is not a boolean value!").format(str(value)))  
+
 
 def _check_db_version(db_version):
         dbv=config['db-version']
