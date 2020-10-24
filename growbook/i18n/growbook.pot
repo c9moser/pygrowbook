@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-24 16:15+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../app.py:82
+msgid "GrowLog"
+msgstr ""
+
+#: ../app.py:86
+msgid "Strains"
+msgstr ""
+
+#: ../app.py:345
+msgid "'VACUUM' successfully run on database!"
+msgstr ""
+
+#: ../app.py:354
+msgid "'VACUUM' failed!"
+msgstr ""
+
+#: ../config.py:61
+#, python-brace-format
+msgid "Value '{0}' is not a boolean value!"
+msgstr ""
+
+#: ../growlog.py:47
+msgid "GrowBook: New Growlog"
+msgstr ""
+
+#: ../growlog.py:101
+msgid "GrowBook: Edit Growlog"
+msgstr ""
+
+#: ../growlog.py:123 ../growlog.py:512
+msgid "Breeder"
+msgstr ""
+
+#: ../growlog.py:127 ../growlog.py:516
+msgid "Strain"
+msgstr ""
+
+#: ../growlog.py:215
+msgid "'id' and 'growlog_id' not set!"
+msgstr ""
+
+#: ../growlog.py:235
+msgid "GrowBook: Growlog Entry"
+msgstr ""
+
+#: ../growlog.py:296
+msgid "Grow started"
+msgstr ""
+
+#: ../growlog.py:299
+msgid "Begin flowering"
+msgstr ""
+
+#: ../growlog.py:309
+msgid "Finished grow."
+msgstr ""
+
+#: ../growlog.py:347 ../growlog.py:484
+msgid "Growlog Calendar"
+msgstr ""
+
+#: ../growlog.py:362
+msgid "Time"
+msgstr ""
+
+#: ../growlog.py:366
+msgid "Entry"
+msgstr ""
+
+#: ../growlog.py:426
+msgid "Edit Growlog"
+msgstr ""
+
+#: ../growlog.py:427
+msgid "Edit Growlog."
+msgstr ""
+
+#: ../growlog.py:437
+msgid "Flowering"
+msgstr ""
+
+#: ../growlog.py:438
+msgid "Start flowering."
+msgstr ""
+
+#: ../growlog.py:445
+msgid "Finish Growlog"
+msgstr ""
+
+#: ../growlog.py:457
+msgid "New Growlog-entry."
+msgstr ""
+
+#: ../growlog.py:464
+msgid "Edit selected Growlog-entry."
+msgstr ""
+
+#: ../growlog.py:470
+msgid "Delete selected Growlog-entry."
+msgstr ""
+
+#: ../growlog.py:479
+msgid "Calculate end of flowering date."
+msgstr ""
+
+#: ../growlog.py:492
+msgid "Refresh Grwolog."
+msgstr ""
+
+#: ../growlog.py:571
+msgid "ID: "
+msgstr ""
+
+#: ../growlog.py:574
+msgid "Created on: "
+msgstr ""
+
+#: ../growlog.py:577
+msgid "Flower on: "
+msgstr ""
+
+#: ../growlog.py:581
+msgid "Finished on: "
+msgstr ""
+
+#: ../growlog.py:592
+msgid "Age: "
+msgstr ""
+
+#: ../growlog.py:593 ../growlog.py:599
+#, python-brace-format
+msgid "{0} days\n"
+msgstr ""
+
+#: ../growlog.py:598
+msgid "Flowering: "
+msgstr ""
+
+#: ../growlog.py:689
+#, python-brace-format
+msgid "Do you want to set flowering date to '{0}'?"
+msgstr ""
+
+#: ../growlog.py:704
+msgid ""
+"Do you really want to finish that Growlog? You will no longer be able to add,"
+"remove or edit Growlog-entries!"
+msgstr ""
+
+#: ../growlog.py:744
+msgid "Do you really want to delete the selected growlog entry?"
+msgstr ""
+
+#: ../growlog.py:815
+msgid "Do you want to delete this Growlogentry?"
+msgstr ""
+
+#: ../growlog.py:973
+#, python-brace-format
+msgid ""
+"This deletes all data of Growlog '{0}'.\n"
+"Do you want to proceed?"
+msgstr ""
+
+#: ../strain.py:33
+msgid "GrowBook: New Breeder"
+msgstr ""
+
+#: ../strain.py:96
+msgid "GrowBook: Edit Breeder"
+msgstr ""
+
+#: ../strain.py:198
+#, python-brace-format
+msgid "Do you really want to delete Strain '{0}'?"
+msgstr ""
+
+#: ../strain.py:271
+msgid "Attribute 'id' and 'breeder_id' not set!"
+msgstr ""
+
+#: ../strain.py:337
+msgid "GrowBook: StrainChooser"
+msgstr ""
+
+#: ../strain.py:343 ../strain.py:504
+msgid "Name"
+msgstr ""
+
+#: ../strain.py:381
+msgid "Breeder Homepage"
+msgstr ""
+
+#: ../strain.py:389
+msgid "SeedFinder.eu"
+msgstr ""
+
+#: ../strain.py:394
+msgid "Strain homepage"
+msgstr ""
+
+#: ../strain.py:402
+msgid "Refresh view."
+msgstr ""
+
+#: ../strain.py:482
+msgid "Homepage"
+msgstr ""
+
+#: ../strain.py:485
+msgid "Seedfinder.eu"
+msgstr ""
+
+#: ../strain.py:488
+msgid "Info"
+msgstr ""
+
+#: ../strain.py:576
+#, python-brace-format
+msgid ""
+"This deletes breeder '{0}' and all corresponding strains.\n"
+"Do you want to proceed?"
+msgstr ""
+
+#: ../strain.py:638
+#, python-brace-format
+msgid ""
+"This deletes strain '{0}' from '{1}'.\n"
+"Do you want to proceed?"
+msgstr ""
+
+#: ../tools.py:28
+msgid "Ventilation"
+msgstr ""
+
+#: ../tools.py:31
+msgid "Width [m]:"
+msgstr ""
+
+#: ../tools.py:39
+msgid "Depth [m]:"
+msgstr ""
+
+#: ../tools.py:47
+msgid "Height [m]:"
+msgstr ""
+
+#: ../tools.py:55
+msgid "Tube length [m]:"
+msgstr ""
+
+#: ../tools.py:63
+msgid "Buffer:"
+msgstr ""
+
+#: ../tools.py:71
+msgid "Recommended capacity:"
+msgstr ""
+
+#: ../tools.py:100
+msgid "Flowering Time"
+msgstr ""
+
+#: ../tools.py:111
+msgid "Start Flowering:"
+msgstr ""
+
+#: ../tools.py:116
+msgid "Flowering days:"
+msgstr ""
+
+#: ../tools.py:123
+msgid "Finished on:"
+msgstr ""

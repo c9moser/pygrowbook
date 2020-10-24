@@ -423,6 +423,7 @@ class GrowlogView(Gtk.Box):
         self.toolbar.set_icon_size(Gtk.IconSize.SMALL_TOOLBAR)
         
         self.edit_growlog_toolbutton=Gtk.ToolButton.new_from_stock(Gtk.STOCK_EDIT)
+        self.edit_growlog_toolbutton.set_label(_("Edit Growlog"))
         self.edit_growlog_toolbutton.set_tooltip_text(_("Edit Growlog."))
         self.edit_growlog_toolbutton.connect('clicked',self.on_edit_growlog_clicked)
         self.toolbar.insert(self.edit_growlog_toolbutton,-1)

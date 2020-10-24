@@ -1,0 +1,13 @@
+char *s = N_("ID:");
+char *s = N_("Created on:");
+char *s = N_("Finished on:");
+char *s = N_("Title:");
+char *s = N_("Description");
+char *s = N_("Growlog");
+char *s = N_("Add Strain");
+char *s = N_("Remove Strain");
+char *s = N_("Strains");
+char *s = N_("0");
+char *s = N_("Delte Growlog Entry");
+char *s = N_("Edit Growlog Entry");
+char *s = N_("New Growlog Entry");
