@@ -142,7 +142,7 @@ class AppWindowHandle(object):
         self.window.hide()
         self.window.destroy()
 
-    def on_actions_preferences(self,action):
+    def on_action_preferences(self,action):
         dialog=preferences.PreferencesDialog(self.window,self.dbcon)
         result=dialog.run()
         if result == Gtk.ResponseType.APPLY:
