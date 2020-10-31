@@ -22,6 +22,7 @@ import datetime
 import strain 
 import i18n; _=i18n.gettext
 import tools
+import growbook
 from collections import namedtuple
 
 (
@@ -538,6 +539,26 @@ class GrowlogView(Gtk.Box):
         self.scrolled_window.add(viewport)
         self.pack_start(self.scrolled_window,True,True,0)
 
+        self.treeview_popup=self.__create_treeview_popup()
+        self.show_all()
+
+    def __create_treeview_popup(self):
+        menu=Gtk.Menu()
+        self.menuitem_new_growlog_entry=Gtk.MenuItem(label=_("New Growlog-entry"))
+        menu.append(self.menuitem_new_growlog_entry)
+        self.menuitem_new_growlog_entry.connect('activate', self.on_new_growlog_entry)
+                
+        self.menuitem_edit_growlog_entry=Gtk.MenuItem(label=_("Edit Growlog-entry"))
+        menu.append(self.menuitem_edit_growlog_entry)
+        self.menuitem_edit_growlog_entry.connect('activate', self.on_edit_growlog_entry)
+                
+        self.menuitem_delete_growlog_entry=Gtk.MenuItem(label=_("Delete Growlog-entry"))
+        menu.append(self.menuitem_delete_growlog_entry)
+        self.menuitem_delete_growlog_entry.connect('activate', self.on_delete_growlog_entry)
+
+        menu.show_all()
+        return menu
+        
     def __create_strainview_model(self,dbcon):
         model=Gtk.ListStore(int,int,str,str)
         cursor=dbcon.execute("SELECT id,strain FROM growlog_strain WHERE growlog=?;",
@@ -648,7 +669,7 @@ class GrowlogView(Gtk.Box):
             self.finish_toolbutton.set_sensitive(False)
             datestr,timestr=row[2].split(' ')
             year,month,day=datestr.split('-')
-            hour,minute,second=datestr.split(':')
+            hour,minute,second=timestr.split(':')
             self.finished_on=datetime.datetime(year,month,day,hour,minute,second)
             self.new_log_entry_toolbutton.set_sensitive(False)
             
@@ -706,8 +727,10 @@ class GrowlogView(Gtk.Box):
         if result==Gtk.ResponseType.YES:
             now=datetime.datetime.now()
             now_str=now.strftime("%Y-%m-%d %H:%M:%S")
-            window.dbcon.execute("UPDATE growlog SET finished_on=? WHERE id=?;"
+            window.dbcon.execute("UPDATE growlog SET finished_on=? WHERE id=?;",
                                  (now_str,self.id))
+            window.dbcon.commit()
+            self.refresh(window.dbcon)
         dialog.hide()
         dialog.destroy()
         
@@ -721,6 +744,7 @@ class GrowlogView(Gtk.Box):
             if result==Gtk.ResponseType.APPLY:
                 self.refresh(window.dbcon)
             dialog.hide()
+
             dialog.destroy()
 
     def on_new_log_entry_clicked(self,toolbutton):
@@ -775,15 +799,15 @@ class GrowlogView(Gtk.Box):
         
     def on_treeview_button_press_event(self,treeview,event):
         if not self.finished:
-            if event.button == 3 and event.type==Gdk.EventType.BUTTON_PRESS:
+            if (event.button == 3 
+                and event.type==Gdk.EventType.BUTTON_PRESS
+                and not self.finished):
                 #show context menu
-                window=self.get_toplevel()
-                menu=window.growlog_entry_popup
-                menu.popup(None,None,None,None,event.button,event.time)
+                self.treeview_popup.popup(None,None,None,None,event.button,event.time)
 
-    def on_action_growlog_entry_new(self,action):
+    def on_new_growlog_entry(self,widget):
         if not self.finished:
-            window=self.get_toplevel()
+            window=growbook.application.window
             dialog=GrowlogEntryDialog(window,window.dbcon,growlog_id=self.id)
             result=dialog.run()
             if result==Gtk.ResponseType.APPLY:
@@ -791,10 +815,10 @@ class GrowlogView(Gtk.Box):
             dialog.hide()
             dialog.destroy()
 
-    def on_action_growlog_entry_edit(self,action):
+    def on_edit_growlog_entry(self,widget):
         if not self.finished:
             window=self.get_toplevel()
-            model,iter=self.treeview.get_selction().get_selected()
+            model,iter=self.treeview.get_selection().get_selected()
             if model and iter:
                 dialog=GrowlogEntryDialog(window,window.dbcon,model[iter][0])
                 result=dialog.run()
@@ -803,7 +827,7 @@ class GrowlogView(Gtk.Box):
                 dialog.hide()
                 dialog.destroy()
 
-    def on_action_growlog_entry_delete(self,action):
+    def on_delete_growlog_entry(self,widget):
         if not self.finished:
             window=self.get_toplevel()
             model,iter=self.treeview.get_selection().get_selected()
@@ -861,6 +885,10 @@ class GrowlogSelector(Gtk.ScrolledWindow):
         self.treeview.connect('button-press-event',self.on_treeview_button_press_event)
         self.add(self.treeview)
 
+        self.popup=self.__create_popup(dbcon)
+        
+        self.show()
+
     def __init_model(self,dbcon):
         model=Gtk.TreeStore(int,str)
 
@@ -894,6 +922,23 @@ class GrowlogSelector(Gtk.ScrolledWindow):
 
         return model
 
+    def __create_popup(self,dbcon):
+        menu=Gtk.Menu()
+        menuitem=Gtk.MenuItem(label=_("Open"))
+        menuitem.connect('activate',lambda w:self.open_selected_growlog(dbcon))
+        menu.append(menuitem)
+
+        menuitem=Gtk.MenuItem(label=_("Edit"))
+        menuitem.connect('activate', lambda w: self.edit_selected_growlog(dbcon))
+        menu.append(menuitem)
+
+        menuitem=Gtk.MenuItem(label=_("Delete"))
+        menuitem.connect('activate', lambda w: self.delete_selected_growlog(dbcon))
+        menu.append(menuitem)
+        
+        menu.show_all()
+        return menu
+        
     def refresh(self,dbcon):
         self.treeview.set_model(self.__init_model(dbcon))
         self.show()
@@ -912,15 +957,10 @@ class GrowlogSelector(Gtk.ScrolledWindow):
 
     def on_treeview_button_press_event(self,treeview,event):
         if event.button == 3 and event.type==Gdk.EventType.BUTTON_PRESS:
-            #show context menu
-            window=self.get_toplevel()
-            window.growlog_selector_popup.popup(None,
-                                                None,
-                                                None,
-                                                None,
-                                                event.button,
-                                                event.time)
-            
+            model,iter=self.treeview.get_selection().get_selected()
+            if model and iter and model[iter][0]:
+                #show context menu
+                self.popup.popup(None,None,None,None,event.button,event.time)
 
     def open_ongoing_growlogs(self,dbcon):
         window=self.get_toplevel()
@@ -953,7 +993,7 @@ class GrowlogSelector(Gtk.ScrolledWindow):
             result=dialog.run()
             if result==Gtk.ResponseType.APPLY:
                 self.refresh(window.dbcon)
-                page=GrowlogView(window.dbcon,row[0])
+                page=GrowlogView(dbcon,model[iter][0])
                 window.add_browser_page(page)
                 window.show_all()
             dialog.hide()
@@ -980,7 +1020,7 @@ class GrowlogSelector(Gtk.ScrolledWindow):
                     dbcon.execute("DELETE FROM growlog WHERE id=?;",
                                   (model[iter][0],))
                     dbcon.commit()
-                except:
+                except Exception as ex:
                     dialog2=Gtk.MessageDialog(self.get_toplevel(),
                                               flags=Gtk.DialogFlags.MODAL,
                                               message_type=Gtk.MessageType.ERROR,

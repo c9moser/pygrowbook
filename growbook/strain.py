@@ -506,6 +506,7 @@ class StrainSelector(Gtk.ScrolledWindow):
         self.treeview.connect('row_activated',self.on_row_activated)
         self.treeview.connect('button-press-event',self.on_treeview_button_press_event)
         self.add(self.treeview)
+        self.popup=self.__create_popup(dbcon)
         
     def __init_model(self,dbcon):
         model=Gtk.TreeStore(int,int,str)
@@ -522,7 +523,35 @@ class StrainSelector(Gtk.ScrolledWindow):
                 model.append(iter,[breeder_id,int(row2[0] or 0),row2[1]])
         
         return model
+    def __create_popup(self,dbcon):
+        menu=Gtk.Menu()
+        
+        menuitem=Gtk.MenuItem(label='Edit Breeder')
+        menuitem.connect('activate', lambda w: self.edit_selected_breeder(dbcon))
+        menu.append(menuitem)
 
+        menuitem=Gtk.MenuItem(label='Delete Breeder')
+        menuitem.connect('activate', lambda w: self.delete_selected_breeder(dbcon))
+        menu.append(menuitem)
+
+        menuitem=Gtk.SeparatorMenuItem()
+        menu.append(menuitem)
+
+        menuitem=Gtk.MenuItem(label=_('Add Strain'))
+        menuitem.connect('activate', lambda w: self.add_strain(dbcon))
+        menu.append(menuitem)
+
+        menuitem=Gtk.MenuItem(label=_('Edit Strain'))
+        menuitem.connect('activate', lambda w: self.edit_selected_strain(dbcon))
+        menu.append(menuitem)
+
+        menuitem=Gtk.MenuItem(label=_('Delete Strain'))
+        menuitem.connect('activate', lambda w: self.delete_selected_strain(dbcon))
+        menu.append(menuitem)
+        
+        menu.show_all()
+        return menu
+        
     def refresh(self,dbcon):
         self.treeview.set_model(self.__init_model(dbcon))
         self.show()
@@ -530,13 +559,7 @@ class StrainSelector(Gtk.ScrolledWindow):
     def on_treeview_button_press_event(self,treeview,event):
         if event.button == 3 and event.type==Gdk.EventType.BUTTON_PRESS:
             #show context menu
-            window=self.get_toplevel()
-            window.strain_selector_popup.popup(None,
-                                               None,
-                                               None,
-                                               None,
-                                               event.button,
-                                               event.time)
+            self.popup.popup(None,None,None,None,event.button,event.time)
     
     def on_row_activated(self,treeview,path,column):
         window=self.get_toplevel()

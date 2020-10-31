@@ -25,13 +25,12 @@ import app
 import growbook
 
 def main():
+    #init gettext
     i18n.init()
-    if not growbook.window:
-        growbook.window=app.AppWindow()
-        growbook.window.show_all()
-        Gtk.main()
-    else:
-        growbook.window.present()
 
+    if not growbook.application:
+        growbook.application=app.Application()
+    growbook.application.run()
+    
 if __name__ == '__main__':
     main()
