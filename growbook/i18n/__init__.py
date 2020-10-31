@@ -25,5 +25,5 @@ def init():
     _gettext.bind_textdomain_codeset('growbook','utf-8')
     _gettext.textdomain('growbook')
 
-gettext=lambda s: _gettext.dgettext('growbook',s)
+gettext=lambda s: _gettext.gettext(s)
     
