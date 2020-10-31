@@ -391,6 +391,6 @@ class Application(Gtk.Application):
         return 0
 
     def do_shutdown(self):
-        Gtk.Application.do_shutdown()
         self.dbcon.close()
+        Gtk.Application.do_shutdown(self)
 
