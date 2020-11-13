@@ -137,4 +137,98 @@ class FloweringDateDialog(Gtk.Dialog):
         finish_on=self.flowering_start + delta
         self.finish_on_label.set_text(finish_on.isoformat())
 
+class PowerConsumptionCalculator(Gtk.ScrolledWindow):
+    (type,) = ("PowerConsumptionCalculator",)
+    
+    def __init__(self,dbcon):
+        Gtk.ScrolledWindow.__init__(self)
+        self.id=0
+        self.title_label=Gtk.Label(_("Power Consumption"))
+        viewport=Gtk.Viewport.new()
+        
+        grid=Gtk.Grid.new()
+        label=Gtk.Label(_("Grow"))
+        grid.attach(label,0,0,1,1)
+        
+        label=Gtk.Label(_("Ballast [W]:"))
+        grid.attach(label,0,1,1,1)
+        adjustment=Gtk.Adjustment.new(400.0,1.0,10000.0,10.0,50.0,1.0)
+        self.grow_ballast_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        grid.attach(self.grow_ballast_spinbutton,1,1,1,1)
+
+        label=Gtk.Label(_("Time per day [h]:"))
+        grid.attach(label,2,1,1,1)
+        adjustment=Gtk.Adjustment.new(18.0,1.0,24.0,1.0,6.0,1.0)
+        self.grow_time_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        grid.attach(self.grow_time_spinbutton,3,1,1,1)
+
+        label=Gtk.Label(_("Duration [days]:"))
+        grid.attach(label,0,2,1,1)
+        adjustment=Gtk.Adjustment(14.0,0.0,365.0,1.0,7.0,1.0)
+        self.grow_days_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        grid.attach(self.grow_days_spinbutton,1,2,1,1)
+        
+        separator=Gtk.HSeparator()
+        grid.attach(separator,0,3,4,1)
+        
+        label=Gtk.Label(_("Flower"))
+        grid.attach(label,0,4,1,1)
+        label=Gtk.Label(_("Ballast [W]:"))
+        grid.attach(label,0,5,1,1)
+        adjustment=Gtk.Adjustment.new(400.0,1.0,10000.0,10.0,50.0,1.0)
+        self.flower_ballast_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        grid.attach(self.flower_ballast_spinbutton,1,5,1,1)
+
+        label=Gtk.Label(_("Time per day [h]:"))
+        grid.attach(label,2,5,1,1)
+        adjustment=Gtk.Adjustment.new(12.0,1.0,24.0,1.0,6.0,1.0)
+        self.flower_time_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        grid.attach(self.flower_time_spinbutton,3,5,1,1)
+
+        label=Gtk.Label(_("Duration [days]:"))
+        grid.attach(label,0,6,1,1)
+        adjustment=Gtk.Adjustment(60.0,0.0,365.0,1.0,7.0,1.0)
+        self.flower_days_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        grid.attach(self.flower_days_spinbutton,1,6,1,1)
+
+        separator=Gtk.HSeparator()
+        grid.attach(separator,0,7,4,1)
+
+        label=Gtk.Label(_('Exhaust System [W]:'))
+        grid.attach(label,0,8,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,10000.0,10.0,50.0,1.0)
+        self.exhaust_system_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        grid.attach(self.exhaust_system_spinbutton,1,8,1,1)
+        
+        viewport.add(grid)
+        self.add(viewport)
+        self.show_all()
+
+    @property
+    def grow_ballast(self):
+        return self.grow_ballast_spinbutton.get_value_as_int()
+
+    @property
+    def grow_time(self):
+        return self.grow_time_spinbutton.get_value_as_int()
+
+    @property
+    def grow_days(self):
+        return self.grow_days_spinbutton.get_value_as_int()
+
+    @property
+    def flower_ballast(self):
+        return self.flower_ballast_spinbutton.get_value_as_int()
+
+    @property
+    def flower_time(self):
+        return self.flower_time_spinbutton.get_value_as_int()
+
+    @property
+    def flower_days(self):
+        return self.flower_days_spinbutton.get_value_as_int()
+
+    @property
+    def exhaust_system(self):
+        return self.exhaust_system_spinbutton.get_value_as_int()
         

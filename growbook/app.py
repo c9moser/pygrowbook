@@ -75,7 +75,8 @@ class AppWindow(Gtk.ApplicationWindow):
         submenu=menu_tools.get_submenu()
         menuitem_ventilation_calculator=self._add_menuitem(submenu,_('Ventialtion Calculator'))
         menuitem_ventilation_calculator.connect('activate',self.on_ventilation_calculator)
-
+        menuitem_power_consumtion_calulator=self._add_menuitem(submenu,_("Power Consumption Calulator"))
+        menuitem_power_consumtion_calulator.connect('activate',self.on_power_consumption_calculator)
         ## menu/help
         menu_help=self._add_submenu(self.menubar,_('Help'))
         submenu=menu_help.get_submenu()
@@ -307,6 +308,10 @@ class AppWindow(Gtk.ApplicationWindow):
         dialog.run()
         dialog.hide()
         dialog.destroy()
+
+    def on_power_consumption_calculator(self,widget):
+        page=tools.PowerConsumptionCalculator(self.dbcon)
+        self.add_browser_page(page)
 
     def do_destroy(self):
         if self.dbcon != growbook.application.dbcon:
