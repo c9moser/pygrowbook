@@ -713,6 +713,7 @@ class GrowlogView(Gtk.Box):
             window.dbcon.execute("UPDATE growlog SET flower_on=? WHERE id=?;",
                                  (date.isoformat(),self.id))
             window.dbcon.commit()
+            self.refresh(window.dbcon)
         dialog.hide()
         dialog.destroy()
 
