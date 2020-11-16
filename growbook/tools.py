@@ -154,18 +154,21 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
         grid.attach(label,0,1,1,1)
         adjustment=Gtk.Adjustment.new(400.0,1.0,10000.0,10.0,50.0,1.0)
         self.grow_ballast_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        self.grow_ballast_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.grow_ballast_spinbutton,1,1,1,1)
 
-        label=Gtk.Label(_("Time per day [h]:"))
+        label=Gtk.Label(_("Hours per day:"))
         grid.attach(label,2,1,1,1)
         adjustment=Gtk.Adjustment.new(18.0,1.0,24.0,1.0,6.0,1.0)
         self.grow_time_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        self.grow_time_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.grow_time_spinbutton,3,1,1,1)
 
         label=Gtk.Label(_("Duration [days]:"))
         grid.attach(label,0,2,1,1)
         adjustment=Gtk.Adjustment(14.0,0.0,365.0,1.0,7.0,1.0)
         self.grow_days_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        self.grow_days_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.grow_days_spinbutton,1,2,1,1)
         
         separator=Gtk.HSeparator()
@@ -177,18 +180,21 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
         grid.attach(label,0,5,1,1)
         adjustment=Gtk.Adjustment.new(400.0,1.0,10000.0,10.0,50.0,1.0)
         self.flower_ballast_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        self.flower_ballast_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.flower_ballast_spinbutton,1,5,1,1)
 
-        label=Gtk.Label(_("Time per day [h]:"))
+        label=Gtk.Label(_("Hours per day:"))
         grid.attach(label,2,5,1,1)
         adjustment=Gtk.Adjustment.new(12.0,1.0,24.0,1.0,6.0,1.0)
         self.flower_time_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        self.flower_time_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.flower_time_spinbutton,3,5,1,1)
 
         label=Gtk.Label(_("Duration [days]:"))
         grid.attach(label,0,6,1,1)
         adjustment=Gtk.Adjustment(60.0,0.0,365.0,1.0,7.0,1.0)
         self.flower_days_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        self.flower_days_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.flower_days_spinbutton,1,6,1,1)
 
         separator=Gtk.HSeparator()
@@ -198,7 +204,36 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
         grid.attach(label,0,8,1,1)
         adjustment=Gtk.Adjustment(0.0,0.0,10000.0,10.0,50.0,1.0)
         self.exhaust_system_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        self.exhaust_system_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.exhaust_system_spinbutton,1,8,1,1)
+        
+        label=Gtk.Label(_('Air Supply [W]:'))
+        grid.attach(label,0,9,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,10000.0,10.0,50.0,1.0)
+        self.supply_air_system_spinbutton=Gtk.SpinButton.new(adjustment,10,0)
+        self.supply_air_system_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.supply_air_system_spinbutton,1,9,1,1)
+        
+        separator=Gtk.HSeparator()
+        grid.attach(separator,0,10,4,1)
+        
+        label=Gtk.Label(_("Price per kWh [cent]:"))
+        grid.attach(label,0,11,1,1)
+        adjustment=Gtk.Adjustment(20.0,1.0,1000.0,1.0,10.0,1.0)
+        self.price_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
+        self.price_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.price_spinbutton,1,11,1,1)
+        
+        separator=Gtk.HSeparator()
+        grid.attach(separator,0,12,4,1)
+        
+        label=Gtk.Label()
+        label.set_markup(_("<b>Total Price</b>"))
+        grid.attach(label,0,13,1,1)
+        self.total_price_label=Gtk.Label()
+        grid.attach(self.total_price_label,1,13,1,1)
+        
+        self.calculate()
         
         viewport.add(grid)
         self.add(viewport)
@@ -231,4 +266,25 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
     @property
     def exhaust_system(self):
         return self.exhaust_system_spinbutton.get_value_as_int()
+        
+    @property
+    def supply_air_system(self):
+        return self.supply_air_system_spinbutton.get_value_as_int()
+       
+    @property
+    def price(self):
+        return self.price_spinbutton.get_value_as_int()
+        
+    def on_spinbutton_value_changed(self,widget):
+        self.calculate()
+        
+    def calculate(self):
+        grow=self.grow_ballast * self.grow_time * self.grow_days
+        flower=self.flower_ballast * self.flower_time * self.flower_days
+        exhaust=self.exhaust_system * 24 * (self.flower_days + self.grow_days)
+        supply=self.supply_air_system * 24 * (self.flower_days + self.grow_days)
+        total_price=(grow+flower+exhaust+supply)*self.price/1000
+        self.total_price_label.set_markup("<b>€ {0},{1}</b>".format(int(total_price/100),
+                                                                    total_price%100))
+    
         
