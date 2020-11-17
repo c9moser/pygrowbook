@@ -73,7 +73,7 @@ class AppWindow(Gtk.ApplicationWindow):
         ## menu/tools
         menu_tools=self._add_submenu(self.menubar,_('Tools'))
         submenu=menu_tools.get_submenu()
-        menuitem_ventilation_calculator=self._add_menuitem(submenu,_('Ventialtion Calculator'))
+        menuitem_ventilation_calculator=self._add_menuitem(submenu,_('Ventilation Calculator'))
         menuitem_ventilation_calculator.connect('activate',self.on_ventilation_calculator)
         menuitem_power_consumtion_calulator=self._add_menuitem(submenu,_("Power Consumption Calulator"))
         menuitem_power_consumtion_calulator.connect('activate',self.on_power_consumption_calculator)
