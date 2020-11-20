@@ -17,7 +17,7 @@
 import gi
 from gi.repository import Gtk
 import datetime
-import i18n
+from . import i18n
 _=i18n.gettext
 from collections import namedtuple
 

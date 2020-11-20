@@ -19,9 +19,9 @@ from gi.repository import Gtk,Pango,Gdk,GdkPixbuf
 import sqlite3
 import os
 import datetime
-import strain 
-import i18n; _=i18n.gettext
-import tools
+from . import strain 
+from . import i18n; _=i18n.gettext
+from . import tools
 import growbook
 from collections import namedtuple
 

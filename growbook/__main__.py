@@ -20,13 +20,13 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 
-import i18n
-import app
+from . import i18n
+from . import app
 import growbook
 
 def main():
     #init gettext
-    i18n.init()
+    #i18n.init()
 
     if not growbook.application:
         growbook.application=app.Application()

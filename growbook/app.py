@@ -19,13 +19,13 @@ from gi.repository import Gtk, Gio, GLib
 import sqlite3
 import os
 import growbook
-import config
-import growlog
-import strain
-import about
-import i18n
-import preferences
-import tools
+from . import config
+from . import growlog
+from . import strain
+from . import about
+from . import i18n
+from . import preferences
+from . import tools
 
 
 _=i18n.gettext

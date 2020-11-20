@@ -16,7 +16,7 @@
 
 from gi.repository import Gtk
 import os
-import config
+from . import config
 
 (PREFERENCES_UI,) = (os.path.join(os.path.dirname(__file__),'preferences.ui'),)
 

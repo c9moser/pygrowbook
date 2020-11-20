@@ -17,7 +17,7 @@
 import gi
 from gi.repository import Gtk,Pango,Gdk
 import os
-import i18n; _=i18n.gettext
+from . import i18n; _=i18n.gettext
 
 (STRAIN_UI,)=(os.path.join(os.path.dirname(__file__),'strain.ui'),)
 

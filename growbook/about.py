@@ -17,7 +17,7 @@
 import gi
 from gi.repository import Gtk
 import os
-import config
+from . import config
 
 (   
     ABOUT_UI,
