@@ -318,7 +318,7 @@ class GrowlogCalendar(Gtk.Calendar):
             time=datetime.time(*tuple((int(i) for i in time_str.split(':'))))
             if date in self.dates.keys():
                 entry_inserted=False
-                for i in xrange(len(self.dates[date])):
+                for i in range(len(self.dates[date])):
                     if self.dates[date][i].time > time:
                         self.dates[date].insert(i,GrowlogCalendarEntry(time,row[1]))
                         entry_inserted=True
@@ -338,7 +338,7 @@ class GrowlogCalendar(Gtk.Calendar):
     def do_month_changed(self):
         self.clear_marks()
         year,month,day=self.get_date()
-        for date in self.dates.iterkeys():
+        for date in self.dates.keys():
             if date.year==year and date.month==month+1:
                 self.mark_day(date.day)
 
