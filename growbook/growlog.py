@@ -517,6 +517,7 @@ class GrowlogView(Gtk.Box):
         column=Gtk.TreeViewColumn(_("Strain"),renderer,text=3)
         self.strain_view.append_column(column)
         self.strain_view.connect("row_activated",self.on_strain_view_row_activated)
+        self.strain_view.show()
         self.vbox.pack_start(self.strain_view,False,False,3)
         
         # Log Entries
@@ -670,7 +671,8 @@ class GrowlogView(Gtk.Box):
             datestr,timestr=row[2].split(' ')
             year,month,day=datestr.split('-')
             hour,minute,second=timestr.split(':')
-            self.finished_on=datetime.datetime(year,month,day,hour,minute,second)
+            self.finished_on=datetime.datetime(int(year),int(month),int(day),
+                                               int(hour),int(minute),int(second))
             self.new_log_entry_toolbutton.set_sensitive(False)
             
         self.edit_log_entry_toolbutton.set_sensitive(False)
