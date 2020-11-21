@@ -183,7 +183,7 @@ class AppWindow(Gtk.ApplicationWindow):
         return menuitem
 
     def add_browser_page(self,widget):
-        for pageno in xrange(self.browser.get_n_pages()):
+        for pageno in range(self.browser.get_n_pages()):
             page=self.browser.get_nth_page(pageno)
             
             if page.type==widget.type and page.id==widget.id:

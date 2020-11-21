@@ -969,7 +969,7 @@ class GrowlogSelector(Gtk.ScrolledWindow):
         iter=model.get_iter_first()
         if model.iter_has_child(iter):
             n=model.iter_n_children(iter)
-            for i in xrange(n):
+            for i in range(n):
                 child_iter=model.iter_nth_child(iter,i)
                 row=model[child_iter]
                 if row[0]:
