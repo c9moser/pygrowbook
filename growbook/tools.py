@@ -257,24 +257,63 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
         self.consumer2_minutes_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
         grid.attach(self.consumer2_minutes_spinbutton,3,13,1,1)
         
+        label=Gtk.Label(_("Consumer 4 [W]:"))
+        grid.attach(label,0,14,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,10001.0,10.0,50.0,1.0)
+        self.consumer3_power_spinbutton=Gtk.SpinButton.new(adjustment,10.0,0)
+        self.consumer3_power_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer3_power_spinbutton,1,14,1,1)
+        label=Gtk.Label(_("Hours per day:"))
+        grid.attach(label,2,14,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,25.0,1.0,5.0,1.0)
+        self.consumer3_hours_spinbutton=Gtk.SpinButton.new(adjustment,1.0,0)
+        self.consumer3_hours_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer3_hours_spinbutton,3,14,1,1)
+        
+        label=Gtk.Label(_("Consumer 5 [W]:"))
+        grid.attach(label,0,15,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,10001.0,10.0,50.0,1.0)
+        self.consumer4_power_spinbutton=Gtk.SpinButton.new(adjustment,10.0,0)
+        self.consumer4_power_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer4_power_spinbutton,1,15,1,1)
+        label=Gtk.Label(_("Hours per day:"))
+        grid.attach(label,2,15,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,25.0,1.0,5.0,1.0)
+        self.consumer4_hours_spinbutton=Gtk.SpinButton.new(adjustment,1.0,0)
+        self.consumer4_hours_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer4_hours_spinbutton,3,15,1,1)
+        
+        label=Gtk.Label(_("Consumer 6 [W]:"))
+        grid.attach(label,0,16,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,10001.0,10.0,50.0,1.0)
+        self.consumer5_power_spinbutton=Gtk.SpinButton.new(adjustment,10.0,0)
+        self.consumer5_power_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer5_power_spinbutton,1,16,1,1)
+        label=Gtk.Label(_("Hours per day:"))
+        grid.attach(label,2,16,1,1)
+        adjustment=Gtk.Adjustment(0.0,0.0,25.0,1.0,5.0,1.0)
+        self.consumer5_hours_spinbutton=Gtk.SpinButton.new(adjustment,1.0,0)
+        self.consumer5_hours_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
+        grid.attach(self.consumer5_hours_spinbutton,3,16,1,1)
+        
         separator=Gtk.HSeparator()
-        grid.attach(separator,0,14,4,1)
+        grid.attach(separator,0,17,4,1)
         
         label=Gtk.Label(_("Price per kWh [Cent]:"))
-        grid.attach(label,0,15,1,1)
+        grid.attach(label,0,18,1,1)
         adjustment=Gtk.Adjustment(20.0,1.0,1001.0,1.0,10.0,1.0)
         self.price_spinbutton=Gtk.SpinButton.new(adjustment,1,0)
         self.price_spinbutton.connect('value-changed',self.on_spinbutton_value_changed)
-        grid.attach(self.price_spinbutton,1,15,1,1)
+        grid.attach(self.price_spinbutton,1,18,1,1)
         
         separator=Gtk.HSeparator()
-        grid.attach(separator,0,16,4,1)
+        grid.attach(separator,0,19,4,1)
         
         label=Gtk.Label()
         label.set_markup(_("<b>Total Price</b>"))
-        grid.attach(label,0,17,1,1)
+        grid.attach(label,0,20,1,1)
         self.total_price_label=Gtk.Label()
-        grid.attach(self.total_price_label,1,17,1,1)
+        grid.attach(self.total_price_label,1,20,1,1)
         
         self.calculate()
         
@@ -342,6 +381,30 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
     def consumer2_minutes(self):
         return self.consumer2_minutes_spinbutton.get_value_as_int()
         
+    @property
+    def consumer3_power(self):
+        return self.consumer3_power_spinbutton.get_value_as_int()
+        
+    @property
+    def consumer3_hours(self):
+        return self.consumer3_hours_spinbutton.get_value_as_int()
+        
+    @property
+    def consumer4_power(self):
+        return self.consumer4_power_spinbutton.get_value_as_int()
+        
+    @property
+    def consumer4_hours(self):
+        return self.consumer4_hours_spinbutton.get_value_as_int()
+        
+    @property
+    def consumer5_power(self):
+        return self.consumer5_power_spinbutton.get_value_as_int()
+        
+    @property
+    def consumer5_hours(self):
+        return self.consumer5_hours_spinbutton.get_value_as_int()
+        
     def on_spinbutton_value_changed(self,widget):
         self.calculate()
         
@@ -366,7 +429,22 @@ class PowerConsumptionCalculator(Gtk.ScrolledWindow):
         else:
             consumer2=0
         
-        total_price=int((grow+flower+exhaust+supply+consumer0+consumer1+consumer2)*self.price/1000)
+        if self.consumer3_power and self.consumer3_hours:
+            consumer3 = int(self.consumer3_power * self.consumer3_hours * (self.flower_days + self.grow_days))
+        else:
+            consumer3=0
+            
+        if self.consumer4_power and self.consumer4_hours:
+            consumer4 = int(self.consumer4_power * self.consumer4_hours * (self.flower_days + self.grow_days))
+        else:
+            consumer4=0
+            
+        if self.consumer5_power and self.consumer5_hours:
+            consumer5 = int(self.consumer5_power * self.consumer5_hours * (self.flower_days + self.grow_days))
+        else:
+            consumer5=0
+            
+        total_price=int((grow+flower+exhaust+supply+consumer0+consumer1+consumer2+consumer3+consumer4+consumer5)*self.price/1000)
         self.total_price_label.set_markup("<b>€ {0},{1}</b>".format(int(total_price/100),
                                                                     total_price%100))
     
