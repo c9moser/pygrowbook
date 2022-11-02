@@ -1,0 +1,12 @@
+body {
+    background-color:#111F10;
+    color:#FFFFFF;
+}
+
+.message-important {
+    text-decoration-line:underline;
+    text-decoration-style:solid;
+    text-decoration-color:red;
+    font-weight:bold;
+    color:red;
+}
