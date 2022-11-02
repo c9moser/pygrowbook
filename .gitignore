@@ -1,0 +1,8 @@
+__pycache__
+__pycache__/*
+*~
+*.swp
+*.tmp
+db.sqlite3
+*.temp
+
