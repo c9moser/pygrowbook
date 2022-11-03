@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-03 14:48+0100\n"
+"PO-Revision-Date: 2022-11-03 14:51+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: index/data.py:11
+msgid "en-US"
+msgstr "de"
+
+#: index/templates/index/main.html:14
+msgid "Growlogs"
+msgstr "Growlogs"
+
+#: index/templates/index/main.html:15
+msgid "Forum"
+msgstr "Forum"
+
+#: index/templates/index/main.html:16
+msgid "Wiki"
+msgstr "Wiki"
+
+#: index/templates/index/main.html:17
+msgid "Strains"
+msgstr "Sorten"
+
+#: index/templates/index/main.html:19
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: index/templates/index/main.html:20
+msgid "Log Out"
+msgstr "Ausloggen"
+
+#: index/templates/index/main.html:22
+msgid "Log In"
+msgstr "Einloggen"
+
+#: index/templates/index/main.html:23
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: index/views.py:24
+#, python-brace-format
+msgid "Welcome {user} to MyGrowBook"
+msgstr "Wilkommen {user} auf MyGrowBook"
+
+#: index/views.py:26
+msgid "Welcome to MyGrowBook"
+msgstr "Wilkommen auf MyGrowBook"

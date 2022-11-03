@@ -1,0 +1,14 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ language_code }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Christian Moser">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

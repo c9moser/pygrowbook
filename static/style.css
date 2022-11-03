@@ -1,3 +1,33 @@
+
+.navbar {
+    background-color:#0C0C0C;
+    color:#AACAA8;
+    padding: 10px 20px;
+    margin: 0px 0px;
+}
+
+.navbar a:link {
+    padding: 10px 20px;
+    background-color:#0C0C0C;
+    color:#AACAA8;
+    text-decoration:none;
+    text-align:center;
+    
+    font-size:22px;
+}
+.navbar a:visited {
+    padding: 10px 20px;
+    color:#AACAA8;
+    background-color:#0C0C0C;
+    text-decoration:none;
+    text-align:center;
+    font-size:22px;
+}
+
+.navbar a:hover {
+    background-color:#1F1F1F;
+}
+
 body {
     background-color:#111F10;
     color:#FFFFFF;
@@ -10,3 +40,4 @@ body {
     font-weight:bold;
     color:red;
 }
+

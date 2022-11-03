@@ -23,6 +23,7 @@ urlpatterns = [
     path('growlog/',include('growlog.urls')),
     path('strains/',include('strains.urls')),
     path('wiki/',include('wiki.urls')),
+    path('user/',include('user.urls')),
     path('admin/', admin.site.urls),
 ]
 
