@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-07 16:02+0000\n"
+"PO-Revision-Date: 2022-11-07 17:12+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: main/config.py:16
+msgid "en-US"
+msgstr "de"
+
+#: main/models.py:27
+msgid "email address"
+msgstr "Email Adresse"
+
+#: main/models.py:28
+msgid "name"
+msgstr "Name"
+
+#: main/models.py:29
+msgid "date joined"
+msgstr "Datum beigetreten"
+
+#: main/models.py:30
+msgid "active"
+msgstr "aktiv"
+
+#: main/models.py:31
+msgid "superuser"
+msgstr "Superuser"
+
+#: main/models.py:32
+msgid "staff"
+msgstr "Personal"
+
+#: main/models.py:33
+msgid "banned"
+msgstr "gebannt"
+
+#: main/templates/main/login.html:10 main/templates/main/signup.html:10
+msgid "Email:"
+msgstr "Email:"
+
+#: main/templates/main/login.html:11 main/templates/main/signup.html:18
+msgid "Password:"
+msgstr "Passwort:"
+
+#: main/templates/main/login.html:13
+msgid "Log in"
+msgstr "Einloggen"
+
+#: main/templates/main/login.html:14
+msgid "I forgot my password"
+msgstr "Ich habe mein Passwort vergessen"
+
+#: main/templates/main/main.html:8
+msgid "MyGrowBook homepage"
+msgstr "MyGrowBook Homepage"
+
+#: main/templates/main/main.html:14
+msgid "Growlogs"
+msgstr "Growlogs"
+
+#: main/templates/main/main.html:15
+msgid "Forum"
+msgstr "Forum"
+
+#: main/templates/main/main.html:16
+msgid "Wiki"
+msgstr "Wiki"
+
+#: main/templates/main/main.html:17
+msgid "Strains"
+msgstr "Sorten"
+
+#: main/templates/main/main.html:20
+msgid "Log Out"
+msgstr "Ausloggen"
+
+#: main/templates/main/main.html:22
+msgid "Log In"
+msgstr "Einloggen"
+
+#: main/templates/main/main.html:23 main/views.py:82
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: main/templates/main/signup.html:14
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: main/templates/main/signup.html:22
+msgid "Confirm Password:"
+msgstr "Passwort bestätigen:"
+
+#: main/templates/main/signup.html:33
+msgid "Sign up"
+msgstr "Registrieren"
+
+#: main/validators.py:8 main/validators.py:15
+msgid "Password needs to contain atleast 1 digit!"
+msgstr "Das Passwort muss mindestens eine Zahl beinhalten!"
+
+#: main/validators.py:10 main/validators.py:17
+msgid "Password needs to contain atleast 1 character!"
+msgstr "Das Passwort muss mindestens einen Buchstaben beinhalten!"
+
+#: main/validators.py:20
+msgid "Password needs to contain atleast 1 character and one digit."
+msgstr "Das Passwort muss mindestens eine Buchstaben und eine Zahl beinhalten."
+
+#: main/views.py:26
+#, python-brace-format
+msgid "Welcome {username} to MyGrowBook"
+msgstr "Willkommen {username} auf MyGrowBook"
+
+#: main/views.py:28
+msgid "Welcome to MyGrowBook"
+msgstr "Willkommen auf MyGrowBook"
+
+#: main/views.py:35
+msgid "LogIn"
+msgstr "LogIn"
+
+#: main/views.py:47
+msgid "Illegal form used!"
+msgstr "Ungültiges Formular benutzt!"
+
+#: main/views.py:51
+msgid "No email-address given!"
+msgstr "Keine Email Adresse angegeben!"
+
+#: main/views.py:54
+msgid "No password given!"
+msgstr "Kein Passwort angegeben!"
+
+#: main/views.py:59
+msgid "Email address or password don't match!"
+msgstr "Email Adresse oder Passwort passen nicht!"
+
+#: main/views.py:108
+msgid "Email address is already in use!"
+msgstr "Email Adresse wird bereits benutzt!"
+
+#: main/views.py:111
+msgid "Username is already in use!"
+msgstr "Nutzername wird bereits benutzt!"
+
+#: main/views.py:117
+msgid "Passwords don't match!"
+msgstr "Passwörter stimmen nicht überein!"

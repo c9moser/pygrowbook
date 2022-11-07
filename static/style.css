@@ -1,3 +1,7 @@
+body {
+    background-color:#111F10;
+    color:#FFFFFF;
+}
 
 .navbar {
     background-color:#0C0C0C;
@@ -28,10 +32,6 @@
     background-color:#1F1F1F;
 }
 
-body {
-    background-color:#111F10;
-    color:#FFFFFF;
-}
 
 .message-important {
     text-decoration-line:underline;
@@ -41,3 +41,11 @@ body {
     color:red;
 }
 
+a:link {
+    color:#858EDD;
+    text-decoration-color:#858EDD;
+}
+a:visited {
+    color:#D56EE1;
+    text-decoration-color:#D56EE1;
+}

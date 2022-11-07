@@ -1,0 +1,10 @@
+#-*- coding:utf-8 -*-
+
+from django.urls import path
+from . import views
+app_name = "settings"
+urlpatterns = [
+    ('',path(views.index,name='index')),
+    ('user/<int:user_id>',path(views.user,name='user_settings')),
+]
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-03 14:48+0100\n"
+"POT-Creation-Date: 2022-11-07 16:02+0000\n"
 "PO-Revision-Date: 2022-11-03 14:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: index/data.py:11
+#: index/data.py:7
 msgid "en-US"
 msgstr "de"
 
@@ -37,10 +37,6 @@ msgstr "Wiki"
 #: index/templates/index/main.html:17
 msgid "Strains"
 msgstr "Sorten"
-
-#: index/templates/index/main.html:19
-msgid "Settings"
-msgstr "Einstellungen"
 
 #: index/templates/index/main.html:20
 msgid "Log Out"
@@ -62,3 +58,6 @@ msgstr "Wilkommen {user} auf MyGrowBook"
 #: index/views.py:26
 msgid "Welcome to MyGrowBook"
 msgstr "Wilkommen auf MyGrowBook"
+
+#~ msgid "Settings"
+#~ msgstr "Einstellungen"

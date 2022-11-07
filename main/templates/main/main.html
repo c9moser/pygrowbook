@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="author" content="Christian Moser" />
-        <meta name="description" content="MyGrowBook index page">
+        <meta name="description" content="{% translate 'MyGrowBook homepage' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
         <title>MyGrowBook</title>
     </head>
@@ -17,10 +17,10 @@
             <a href="{% url 'strains:index' %}">{% translate "Strains" %}</a>
             {% if user.is_authenticated %}
                 <!-- TODO: add settings -->
-                <a href="{% url 'user:logout' %}">{% translate "Log Out" %}</a>
+                <a href="{% url 'main:logout' %}">{% translate "Log Out" %}</a>
             {% else %}
-                <a href="{% url 'user:login' %}">{% translate "Log In" %}</a>
-                <a href="{% url 'user:register' %}">{% translate "Sign Up" %}</a>
+                <a href="{% url 'main:login' %}">{% translate "Log In" %}</a>
+                <a href="{% url 'main:signup' %}">{% translate "Sign Up" %}</a>
             {% endif %}
         </nav>
         <h1>{{ title }}</h1>

@@ -11,12 +11,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import main
 
 from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,15 +30,17 @@ DEBUG = True
 ALLOWED_HOSTS = ['mygrowbook','127.0.0.1']
 
 
+PASSWORD_MIN_LENGTH = 8
+
 # Application definition
 
 INSTALLED_APPS = [
-    'index.apps.IndexConfig',
+    'main.apps.MainConfig',
+    'settings.apps.SettingsConfig',
     'forum.apps.ForumConfig',
     'growlog.apps.GrowlogConfig',
     'strains.apps.StrainsConfig',
     'wiki.apps.WikiConfig',
-    'user.apps.UserConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -95,6 +97,12 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': PASSWORD_MIN_LENGTH,
+        },
+    },
+    {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
@@ -123,7 +131,7 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('en-us', _('English')),
+    ('en-US', _('English')),
     ('de', _('German'))
 ]
 
@@ -141,5 +149,25 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL='user.User'
+AUTH_USER_MODEL='main.User'
 
+# email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'c9.mygrowbook@gmail.com'
+EMAIL_HOST_PASSWORD = 'yencchkhvodxyarg'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_ADDRESS_DEFAULT = 'c9.mygrowbook@gmail.com'
+EMAIL_ADDRESS_NOREPLY = 'c9.mygrowbook@gmail.com'
+EMAIL_ADDRESS_ADMIN = 'c9.mygrowbook@gmail.com'
+EMAIL_ADDRESS_WEBAMSTER = 'c9.mygrowbook@gmail.com'
+
+SITE_PROTOCOL = 'http'
+SITE_SECURE_PROTOCOL = 'http'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+URL_WEBSITE_SCHEMES=['http','https']
+
+#SITE_DOMAIN = ''

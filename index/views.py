@@ -27,3 +27,12 @@ def index(request):
         
     return render(request,index_template,context)
 
+def login(request):
+    return HttpResponse('MyGrowBook/main/login/')
+    
+def logout(request):
+    return HttpResponse('MyGrowBook/main/logout/')
+    
+def register(request):
+    return HttpResponse('MyGrowBook/main/register/')
+

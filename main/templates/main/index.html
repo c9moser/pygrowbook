@@ -1,0 +1,13 @@
+{% extends './main.html' %}
+{% block info %}
+    <p><i>mygrowbook</i> is a site from growers for growers. We offer a
+        <a href="{% url 'forum:index' %}">Forum</a>, a 
+        <a href="{% url 'wiki:index' %}">Wiki</a>, a             
+        <a href="{% url 'growlog:index' %}">Growlog section</a> and a
+        <a href="{% url 'strains:index' %}">Strain-Browser</a>.</p>
+    <p>We are <span class='message-important'>not a shop</span> and we are 
+        <span class='message-important'>not a trading platform for 
+        cannabis</span>. Trading cannabis on this site leads to a ban!!!</p>
+{% endblock %}
+
+

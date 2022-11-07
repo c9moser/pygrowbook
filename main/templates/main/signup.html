@@ -1,0 +1,36 @@
+{% extends './main.formview.html' %}
+{% load i18n %}
+{% block content %}
+<form class="login-form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" id="next" value="{{ next }}">
+    {% if error %}<span class='message-error'>{{ error }}</span><br>{% endif %}
+    <table>
+        <tr>
+            <td>{% translate "Email:" %}</td>
+            <td><input type='email' name='email' id='email' value="{{ email }}" required></td>
+        </tr>
+        <tr>
+            <td>{% translate "Username:" %}</td>
+            <td><input type='text' name='username' id='username' value="{{ username }}" required></td>
+        </tr>
+        <tr>
+            <td>{% translate "Password:" %}</td>
+            <td><input type='password' name='password0' id='password0' required></td>
+        </tr>
+        <tr>
+            <td>{% translate "Confirm Password:" %}</td>
+            <td><input type='password' name='password1' id='password1' required></td>
+        </tr>
+    </table>
+    <div class='message-info'>
+        <ul>
+        {% for passwd_help in password_validators_help %}
+            <li>{{ passwd_help }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <input type='submit' value="{% translate 'Sign up' %}">
+</form>
+{% endblock %}
+
