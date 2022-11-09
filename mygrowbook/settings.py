@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import main
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .private_settings.py import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,SECRET_KEY
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
