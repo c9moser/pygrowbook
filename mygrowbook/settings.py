@@ -15,7 +15,7 @@ import main
 
 from django.utils.translation import gettext_lazy as _
 
-from .private_settings.py import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,SECRET_KEY
+from .private_settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,SECRET_KEY
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

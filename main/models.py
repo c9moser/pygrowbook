@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin,Group
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.utils.translation import ugettext_lazy as _,gettext_noop as N_
+from django.utils.translation import gettext_lazy as _,gettext_noop as N_
 from django.core.validators import validate_email
 from .managers import UserManager
 from . import config
