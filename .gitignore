@@ -5,4 +5,4 @@ __pycache__/*
 *.tmp
 db.sqlite3
 *.temp
-
+private_settings.py
