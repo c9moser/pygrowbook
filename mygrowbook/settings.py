@@ -15,6 +15,7 @@ import main
 
 from django.utils.translation import ugettext_lazy as _
 
+from .private_settings.py import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,SECRET_KEY
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&gdpaa^&4o)-k32qvjn*6e_dzut$y8$#+ze)14_%h%+l_^$e&2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,8 +153,6 @@ AUTH_USER_MODEL='main.User'
 
 # email settings
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'c9.mygrowbook@gmail.com'
-EMAIL_HOST_PASSWORD = 'yencchkhvodxyarg'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_ADDRESS_DEFAULT = 'c9.mygrowbook@gmail.com'
