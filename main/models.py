@@ -74,11 +74,12 @@ class User(AbstractBaseUser,PermissionsMixin):
         
     def is_in_group(self,group):
         g = self._get_group(group)
-        try:
-            self.groups.get(name=g.name)
-            return True
-        except Group.DoesNotExist:
-            pass
+        if g:
+            try:
+                self.groups.get(name=g.name)
+                return True
+            except Group.DoesNotExist:
+                pass
         return False
     # User.is_in_group()
     

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import auth
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.contrib.auth.password_validation import get_password_validators,password_validators_help_texts,validate_password
 from django.conf import settings
@@ -46,8 +46,7 @@ def login(request):
         try:
             email = request.POST['email'].lower()
             password = request.POST['password']
-            if request.POST['next'] and is_safe_url(request.POST['next'],
-                                                    allowed_hosts=[request.get_host()]):
+            if request.POST['next'] and url_has_allowed_host_and_scheme(request.POST['next'],allowed_hosts=[request.get_host()]):
                 context['next'] = request.POST['next']
         except KeyError:
             context['error'] = _("Illegal form used!")
@@ -70,7 +69,7 @@ def login(request):
         return redirect(context['next'])
     # Login form callback
         
-    if 'next' in request.GET and is_safe_url(request.GET['next'],allowed_hosts=[request.get_host()]):
+    if 'next' in request.GET and url_has_allowed_host_and_scheme(request.GET['next'],allowed_hosts=[request.get_host()]):
         context['next'] = request.GET['next']
     
     return render(request,'main/login.html',context)
