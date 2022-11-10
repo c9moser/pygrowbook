@@ -151,15 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL='main.User'
 
-# email settings
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_ADDRESS_DEFAULT = 'c9.mygrowbook@gmail.com'
-EMAIL_ADDRESS_NOREPLY = 'c9.mygrowbook@gmail.com'
-EMAIL_ADDRESS_ADMIN = 'c9.mygrowbook@gmail.com'
-EMAIL_ADDRESS_WEBAMSTER = 'c9.mygrowbook@gmail.com'
-
 SITE_PROTOCOL = 'http'
 SITE_SECURE_PROTOCOL = 'http'
 

@@ -1,19 +1,19 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
+{% if language_code %}
 <html lang="{{ language_code }}">
+{% else %}
+<html lang="{% translate 'en-US' %}">
+{% endif %}
     <head>
         <meta charset="utf-8">
-        <meta name="author" content="Christian Moser">
+        <meta name="author" content="{% if author %}{{ author }}{% else %}Christian Moser{% endif %}">
         <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     </head>
     <body>
         <div class='header'>
-            {% if topic %}
-                <h1>MyGrowBook: {{ topic }}</h1>
-            {% else %}
-                <h1>MyGrowBook</h1>
-            {% endif %}
+            <h1>{% if topic %}MyGrowBook: {{ topic }}{% else %}MyGrowBook{% endif %}</h1>
         </div>
         {% block content %}
         {% endblock %}
