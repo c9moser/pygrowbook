@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-07 16:02+0000\n"
+"POT-Creation-Date: 2022-11-14 07:56+0100\n"
 "PO-Revision-Date: 2022-11-07 17:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,97 +18,113 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: main/config.py:16
+#: main/config.py:8 main/templates/main/main.formview.html.py:7
 msgid "en-US"
 msgstr "de"
 
-#: main/models.py:27
+#: main/models.py:30
 msgid "email address"
 msgstr "Email Adresse"
 
-#: main/models.py:28
+#: main/models.py:31
 msgid "name"
 msgstr "Name"
 
-#: main/models.py:29
+#: main/models.py:32
 msgid "date joined"
 msgstr "Datum beigetreten"
 
-#: main/models.py:30
+#: main/models.py:33
 msgid "active"
 msgstr "aktiv"
 
-#: main/models.py:31
+#: main/models.py:34
 msgid "superuser"
 msgstr "Superuser"
 
-#: main/models.py:32
+#: main/models.py:35
 msgid "staff"
 msgstr "Personal"
 
-#: main/models.py:33
+#: main/models.py:36
 msgid "banned"
 msgstr "gebannt"
 
-#: main/templates/main/login.html:10 main/templates/main/signup.html:10
+#: main/templates/main/login.html.py:10 main/templates/main/signup.html.py:10
 msgid "Email:"
 msgstr "Email:"
 
-#: main/templates/main/login.html:11 main/templates/main/signup.html:18
+#: main/templates/main/login.html.py:11 main/templates/main/signup.html.py:18
 msgid "Password:"
 msgstr "Passwort:"
 
-#: main/templates/main/login.html:13
+#: main/templates/main/login.html.py:13
+#: main/templates/main/password/password_reset_complete.html.py:6
+#: main/views.py:45
 msgid "Log in"
 msgstr "Einloggen"
 
-#: main/templates/main/login.html:14
+#: main/templates/main/login.html.py:14
 msgid "I forgot my password"
 msgstr "Ich habe mein Passwort vergessen"
 
-#: main/templates/main/main.html:8
-msgid "MyGrowBook homepage"
-msgstr "MyGrowBook Homepage"
-
-#: main/templates/main/main.html:14
-msgid "Growlogs"
-msgstr "Growlogs"
-
-#: main/templates/main/main.html:15
-msgid "Forum"
-msgstr "Forum"
-
-#: main/templates/main/main.html:16
-msgid "Wiki"
-msgstr "Wiki"
-
-#: main/templates/main/main.html:17
-msgid "Strains"
-msgstr "Sorten"
-
-#: main/templates/main/main.html:20
-msgid "Log Out"
-msgstr "Ausloggen"
-
-#: main/templates/main/main.html:22
-msgid "Log In"
-msgstr "Einloggen"
-
-#: main/templates/main/main.html:23 main/views.py:82
-msgid "Sign Up"
+#: main/templates/main/login.html.py:15 main/templates/main/signup.html.py:33
+msgid "Sign up"
 msgstr "Registrieren"
 
-#: main/templates/main/signup.html:14
+#: main/templates/main/password/password_reset_complete.html.py:5
+msgid "Your password has been reset. Please log in now!\""
+msgstr ""
+
+#: main/templates/main/password/password_reset_confirm.html.py:4
+msgid "Password Reset Confirm"
+msgstr ""
+
+#: main/templates/main/password/password_reset_confirm.html.py:5
+msgid "Please enter your new password."
+msgstr ""
+
+#: main/templates/main/password/password_reset_confirm.html.py:9
+#, fuzzy
+#| msgid "Password:"
+msgid "Set password"
+msgstr "Passwort:"
+
+#: main/templates/main/password/password_reset_done.html.py:4
+msgid "Password reset send"
+msgstr ""
+
+#: main/templates/main/password/password_reset_done.html.py:5
+msgid ""
+"We have mailed you instructions for setting your password,\n"
+"if an account exists with your email you entered. You should recieve it \n"
+"shortly."
+msgstr ""
+
+#: main/templates/main/password/password_reset_done.html.py:8
+msgid ""
+"If you don't recieve an email, please make sure you entered\n"
+"the email address you registered with and please check your spam \n"
+"folder."
+msgstr ""
+
+#: main/templates/main/password/password_reset_request.html.py:5
+msgid ""
+"Forgotten your password? Enter your email address below,\n"
+"and we will email you instructions for setting a new one."
+msgstr ""
+
+#: main/templates/main/password/password_reset_request.html.py:10
+msgid "Send email"
+msgstr ""
+
+#: main/templates/main/signup.html.py:14
 msgid "Username:"
 msgstr "Benutzername:"
 
-#: main/templates/main/signup.html:22
+#: main/templates/main/signup.html.py:22
 msgid "Confirm Password:"
 msgstr "Passwort bestätigen:"
-
-#: main/templates/main/signup.html:33
-msgid "Sign up"
-msgstr "Registrieren"
 
 #: main/validators.py:8 main/validators.py:15
 msgid "Password needs to contain atleast 1 digit!"
@@ -122,43 +138,77 @@ msgstr "Das Passwort muss mindestens einen Buchstaben beinhalten!"
 msgid "Password needs to contain atleast 1 character and one digit."
 msgstr "Das Passwort muss mindestens eine Buchstaben und eine Zahl beinhalten."
 
-#: main/views.py:26
+#: main/views.py:36
 #, python-brace-format
 msgid "Welcome {username} to MyGrowBook"
 msgstr "Willkommen {username} auf MyGrowBook"
 
-#: main/views.py:28
+#: main/views.py:38
 msgid "Welcome to MyGrowBook"
 msgstr "Willkommen auf MyGrowBook"
 
-#: main/views.py:35
-msgid "LogIn"
-msgstr "LogIn"
-
-#: main/views.py:47
+#: main/views.py:56
 msgid "Illegal form used!"
 msgstr "Ungültiges Formular benutzt!"
 
-#: main/views.py:51
+#: main/views.py:60
 msgid "No email-address given!"
 msgstr "Keine Email Adresse angegeben!"
 
-#: main/views.py:54
+#: main/views.py:63
 msgid "No password given!"
 msgstr "Kein Passwort angegeben!"
 
-#: main/views.py:59
+#: main/views.py:68
 msgid "Email address or password don't match!"
 msgstr "Email Adresse oder Passwort passen nicht!"
 
-#: main/views.py:108
+#: main/views.py:91
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: main/views.py:117
 msgid "Email address is already in use!"
 msgstr "Email Adresse wird bereits benutzt!"
 
-#: main/views.py:111
+#: main/views.py:120
 msgid "Username is already in use!"
 msgstr "Nutzername wird bereits benutzt!"
 
-#: main/views.py:117
+#: main/views.py:126
 msgid "Passwords don't match!"
 msgstr "Passwörter stimmen nicht überein!"
+
+#: main/views.py:177
+msgid "Invalid header found!"
+msgstr ""
+
+#: main/views.py:183
+#, fuzzy
+#| msgid "Password:"
+msgid "Reset Password"
+msgstr "Passwort:"
+
+#~ msgid "MyGrowBook homepage"
+#~ msgstr "MyGrowBook Homepage"
+
+#~ msgid "Growlogs"
+#~ msgstr "Growlogs"
+
+#~ msgid "Forum"
+#~ msgstr "Forum"
+
+#~ msgid "Wiki"
+#~ msgstr "Wiki"
+
+#~ msgid "Strains"
+#~ msgstr "Sorten"
+
+#~ msgid "Log Out"
+#~ msgstr "Ausloggen"
+
+#~ msgid "Log In"
+#~ msgstr "Einloggen"
+
+#~ msgid "LogIn"
+#~ msgstr "LogIn"

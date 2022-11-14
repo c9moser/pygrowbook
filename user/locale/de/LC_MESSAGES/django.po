@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-03 14:48+0100\n"
+"POT-Creation-Date: 2022-11-14 07:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: user/models.py:11
 msgid "email address"
 msgstr ""
@@ -53,54 +54,58 @@ msgstr ""
 msgid "banned"
 msgstr ""
 
-#: user/templates/login.html:8
+#: user/templates/login.html.py:8
 msgid "LOGIN"
 msgstr ""
 
-#: user/templates/login.html:11 user/templates/register.html:11
+#: user/templates/login.html.py:11 user/templates/register.html.py:11
 msgid "Email:"
 msgstr ""
 
-#: user/templates/login.html:12 user/templates/register.html:19
+#: user/templates/login.html.py:12 user/templates/register.html.py:19
 msgid "Password:"
 msgstr ""
 
-#: user/templates/login.html:14
+#: user/templates/login.html.py:14
 msgid "Log in"
 msgstr ""
 
-#: user/templates/register.html:8
+#: user/templates/register.html.py:8
 msgid "Register a new account"
 msgstr ""
 
-#: user/templates/register.html:15
+#: user/templates/register.html.py:15
 msgid "Username:"
 msgstr ""
 
-#: user/templates/register.html:23
+#: user/templates/register.html.py:23
 msgid "Confirm Password:"
 msgstr ""
 
-#: user/templates/register.html:27
+#: user/templates/register.html.py:27
 msgid "First Name:"
 msgstr ""
 
-#: user/templates/register.html:31
+#: user/templates/register.html.py:31
 msgid "Last Name:"
 msgstr ""
 
-#: user/views.py:27
+#: user/templates/register.html.py:35
+msgid "Sign up"
+msgstr ""
+
+#: user/views.py:32
 msgid "Illegal form used!"
 msgstr ""
 
-#: user/views.py:31
+#: user/views.py:36
 msgid "No email-address given!"
 msgstr ""
 
-#: user/views.py:34
+#: user/views.py:39
 msgid "No password given!"
 msgstr ""
 
-#: user/views.py:39
+#: user/views.py:44
 msgid "Email-address or password does not match!"
 msgstr ""

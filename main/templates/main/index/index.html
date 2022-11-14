@@ -1,4 +1,4 @@
-{% extends '../main.html' %}
+{% extends 'main.html' %}
 {% load i18n %}
 {% include '../left_sidebar.html' %}
 
@@ -7,7 +7,7 @@
 We offer a <a href="{% url 'forum:index' %}">Forum</a>, a 
 <a href="{% url 'wiki:index' %}">Wiki</a>, a             
 <a href="{% url 'growlog:index' %}">Growlog section</a> and a
-<a href="{% url 'strains:index' %}">Strain-Browser</a>.</p>
+<a href="{% url 'strainbrowser:index' %}">Strain-Browser</a>.</p>
 
 <p>We are <span class='message-important'>not a shop</span> and 
 we are <span class='message-important'>not a trading platform for 

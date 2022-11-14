@@ -1,0 +1,340 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-14 07:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: strainbrowser/models.py:37
+msgid "Strainbrowser operator"
+msgstr ""
+
+#: strainbrowser/models.py:38
+msgid "Allowed to add breeders"
+msgstr ""
+
+#: strainbrowser/models.py:39
+msgid "Allowed to edit all breeders"
+msgstr ""
+
+#: strainbrowser/models.py:40
+msgid "Allowed to delete breeders"
+msgstr ""
+
+#: strainbrowser/models.py:83
+msgid "Allowed to translate strains"
+msgstr ""
+
+#: strainbrowser/models.py:84
+msgid "Allowed to add strains"
+msgstr ""
+
+#: strainbrowser/models.py:85
+msgid "Allowed to edit strains"
+msgstr ""
+
+#: strainbrowser/models.py:86
+msgid "Allowed to delete strains"
+msgstr ""
+
+#: strainbrowser/models.py:98
+msgid "Breeder-key is already in use!"
+msgstr ""
+
+#: strainbrowser/models.py:139
+msgid "Strain has already a translation in sepcified language!"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:7
+msgid "Add a breeder"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:13
+msgid "Breeder Name"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:14
+#: templates/navbar.html.py:7
+msgid "Strains"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:15
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:35
+msgid "Added by"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:16
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:36
+msgid "Actions"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:26
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:44
+msgid "Edit"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder.html.py:31
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:49
+msgid "Delete"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_edit.html.py:13
+msgid "Breeder name:"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_edit.html.py:17
+msgid "Breeder Key:"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_edit.html.py:21
+msgid "Homepage:"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_edit.html.py:25
+msgid "Seedfinder:"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_edit.html.py:29
+msgid "Add Breeder"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:6
+msgid "Edit Breeder"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:20
+msgid "Breeder Homepage"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:25
+msgid "Seedfinder.eu"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/breeder/breeder_overview.html.py:34
+msgid "Strain"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:5
+#, python-format
+msgid ""
+"The <strong>StrainBrowser</strong> currently contains \n"
+"%(breeder_count)s breeders with a total of %(strain_count)s strains.\n"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:8
+#, python-format
+msgid ""
+"To start browsing out strains visit our \n"
+"<a href=\"%(url_breeder_home)s\">Breeder List</a> or use the search filed \n"
+"below."
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:12
+#, python-format
+msgid ""
+"If the breeder you searched for is\n"
+"not in our database you might want to \n"
+"<a href=\"%(url_breeder_add)s\">add that breeder</a>."
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:16
+msgid ""
+"If found the breeder you searched\n"
+"for, but the database doesn't contain the specified strain entry, visit "
+"the \n"
+"breeder overview of that breeder and and add the strain there."
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:22
+msgid "Search a strain"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/index/index.html.py:25
+#: strainbrowser/templates/strainbrowser/left_sidebar.html.py:10
+msgid "Search"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/left_sidebar.html.py:3
+msgid "StrainBrowser"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/left_sidebar.html.py:5
+msgid "Breeder List"
+msgstr ""
+
+#: strainbrowser/templates/strainbrowser/left_sidebar.html.py:7
+msgid "Search Strain"
+msgstr ""
+
+#: strainbrowser/views.py:18
+msgid "MyGrowBook StrainBrowser"
+msgstr ""
+
+#: strainbrowser/views.py:21
+msgid "MyGrowBook: StrainBrowser"
+msgstr ""
+
+#: strainbrowser/views.py:22
+msgid "StrainBrowser Home"
+msgstr ""
+
+#: strainbrowser/views.py:34
+msgid "MyGrowBook Breeders"
+msgstr ""
+
+#: strainbrowser/views.py:37
+msgid "MyGrowBook: Breeders"
+msgstr ""
+
+#: strainbrowser/views.py:38
+msgid "Breeder list"
+msgstr ""
+
+#: strainbrowser/views.py:61
+#, python-brace-format
+msgid "MyGrowBook: {breeder}"
+msgstr ""
+
+#: strainbrowser/views.py:62
+#, python-brace-format
+msgid "MyGrowBook - Breeder overview - {breeder}"
+msgstr ""
+
+#: strainbrowser/views.py:89 strainbrowser/views.py:91
+msgid "Add a new Breeder"
+msgstr ""
+
+#: strainbrowser/views.py:90
+msgid "MyGrowBook: Breeder Add"
+msgstr ""
+
+#: strainbrowser/views.py:109
+#, python-brace-format
+msgid "A Breeder with name \"{breeder_name}\" already exists!"
+msgstr ""
+
+#: strainbrowser/views.py:115 strainbrowser/views.py:168
+#, python-brace-format
+msgid "\"{key}\" is not a valid key!"
+msgstr ""
+
+#: strainbrowser/views.py:120
+#, python-brace-format
+msgid "Breeder key \"{key}\" is already in use"
+msgstr ""
+
+#: strainbrowser/views.py:134
+msgid "Unable to add breeder to database!"
+msgstr ""
+
+#: strainbrowser/views.py:150
+#, python-brace-format
+msgid "Edit Breeder {breeder}"
+msgstr ""
+
+#: strainbrowser/views.py:151
+#, python-brace-format
+msgid "MyGrowBook: Edit Breeder {breeder}"
+msgstr ""
+
+#: strainbrowser/views.py:152
+#, python-brace-format
+msgid "Edit breeder {breeder}"
+msgstr ""
+
+#: strainbrowser/views.py:174
+#, python-brace-format
+msgid "Breeder \"{breeder}\" already exists!"
+msgstr ""
+
+#: strainbrowser/views.py:182
+#, python-brace-format
+msgid "Breeder with key \"{key}\" already exists!"
+msgstr ""
+
+#: strainbrowser/views.py:214
+#, python-brace-format
+msgid "MyGrowBook: {breeder} - {strain}"
+msgstr ""
+
+#: strainbrowser/views.py:217
+#, python-brace-format
+msgid "MyGrowBook - Strain - {breeder}|{strain}"
+msgstr ""
+
+#: templates/head.html.py:14
+msgid "MyGrowBook homepage"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:5
+msgid "User Management"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:8
+msgid "Manage Users"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:13
+msgid "Forum users"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:18
+msgid "Wiki users"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:23
+msgid "StrainBrowser Users"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:31
+msgid "Group Management"
+msgstr ""
+
+#: templates/left_sidebar.manage.html.py:33
+msgid "Manage Groups"
+msgstr ""
+
+#: templates/navbar.html.py:3
+msgid "Home"
+msgstr ""
+
+#: templates/navbar.html.py:4
+msgid "Growlogs"
+msgstr ""
+
+#: templates/navbar.html.py:5
+msgid "Forum"
+msgstr ""
+
+#: templates/navbar.html.py:6
+msgid "Wiki"
+msgstr ""
+
+#: templates/navbar.html.py:9
+msgid "Settings"
+msgstr ""
+
+#: templates/navbar.html.py:10
+msgid "Log Out"
+msgstr ""
+
+#: templates/navbar.html.py:12
+msgid "Log In"
+msgstr ""
+
+#: templates/navbar.html.py:13
+msgid "Sign Up"
+msgstr ""

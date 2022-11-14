@@ -10,36 +10,40 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import BadHeaderError,send_mail
+from django.core.exceptions import ValidationError
+from django.template.loader import render_to_string
+from django.contrib.auth.decorators import permission_required
+from django.urls import reverse
 
 from .models import User
-
-from . import config
+from . import config,functions
 
 def index(request):
+    language_code = config.get_locale()
     try:
-        language_code = config.get_locale()
-        index_template=config.INDEX_TEMPLATES[language_code]        
+        index_template = config.INDEX_TEMPLATE[language_code]
     except KeyError:
-        language_code='en-US'
-        index_template=config.INDEX_TEMPLATES['en-US']
-
+        index_template = 'main/index/index.html'
+        
     context = {
         'user':request.user,
         'language_code':language_code,
     }
     
+    context.update(functions.get_sidebar_context(request.user))
+    
     if request.user.is_authenticated:
         context['title'] = _("Welcome {username} to MyGrowBook".format(username=request.user.get_full_name()))
     else:
         context['title'] = _("Welcome to MyGrowBook")
-        
+    
     return render(request,index_template,context)
 
 def login(request):
     context={
         'language_code':config.get_locale(),
-        'topic': _('LogIn'),
-        'next':'/',
+        'topic': _('Log in'),
+        'next':reverse('index'),
     }
     
     if request.method == "POST":
@@ -77,7 +81,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('/')
+    return redirect(reverse('index'))
 # logout()
 
 def signup(request):
@@ -87,7 +91,7 @@ def signup(request):
         'topic': _("Sign Up"),
         'email':'',
         'username':'',
-        'next':'/',
+        'next':reverse('index'),
         'password_validators_help': password_validators_help_texts(password_validators)
     }
     if request.method == 'POST':
@@ -106,7 +110,7 @@ def signup(request):
         except User.DoesNotExist:
             context['username'] = request.POST['username']
             
-        if is_safe_url(request.POST['next'],allowed_hosts=[request.get_host()]):
+        if url_has_allowed_host_and_scheme(request.POST['next'],allowed_hosts=[request.get_host()]):
             context['next'] = request.POST['next']
         
         if email_in_use:
@@ -122,7 +126,7 @@ def signup(request):
             context['error'] = _("Passwords don't match!")
             return render(request,'main/signup.html',context)
         try: 
-            validate_password(password,
+            validate_password(password0,
                               user=None,
                               password_validators=password_validators)
         except ValidationError as error:
@@ -133,7 +137,7 @@ def signup(request):
         if user:
             user.set_password(password0)
             user.save()
-            make_user(user)
+            user.make_member()
         return redirect(context['next'])                
     else:
         if 'next' in request.GET and is_safe_url(request.GET['next'],allowed_hosts=[request.get_host()]):
@@ -148,11 +152,14 @@ def password_reset_request(request):
     if request.method == 'POST':
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():
-            data = password_reset_form.cleaned_data('email')
+            data = password_reset_form.cleaned_data['email']
             try:
                 user = User.objects.get(email=data)
                 subject = "Password Reset Requested"
-                email_template_name = 'main/password/password-reset.mail.txt'
+                try:
+                    email_template = config.RESET_PASSWORD_MAIL_TEMPLATE[config.get_locale()]
+                except KeyError:
+                    email_template = 'main/password/password_reset_mail.txt'
                 context.update({
                     'email': user.email,
                     'username': user.get_full_name(),
@@ -163,19 +170,39 @@ def password_reset_request(request):
                     'token': default_token_generator.make_token(user),
                     'protocol': settings.SITE_SECURE_PROTOCOL,                    
                 })
-                email = render_to_string(email_template_name,context)
+                email = render_to_string(email_template,context)
                 try:
                     send_mail(subject,email,settings.EMAIL_ADDRESS_NOREPLY,[user.email])
                 except BadHeaderError:
                     return HttpResponse(request,_('Invalid header found!'))
-                
-                redirect("/password_reset/done/")
             except User.DoesNotExist:
                 pass
+            return redirect(reverse('password_reset_done'))
+    # request.method == 'POST'
     context.update({
         'topic': _("Reset Password"),
         'password_reset_form': PasswordResetForm()
     })
-    return render(request,'main/password/password_reset.html',context)
+    return render(request,'main/password/password_reset_request.html',context)
 # password_reset_request()
+
+@permission_required('group.manage',login_url='/login/')
+def group(request):
+    return HttpResponse('/group/')
+# group()
+    
+@permission_required('group.manage',login_url='/login/')
+def group_manage(request,group_id):
+    return HttpResponse('/group/{}/'.format(group_id))
+# group_manage()
+    
+@permission_required('user.manage',login_url='/login/')
+def user(request):
+    return HttpResponse('/user/')
+# user()
+    
+@permission_required('user.manage',login_url='/login/')
+def user_manage(request,user_id):
+    return HttpResponse('/user/{}/'.format(user_id))
+# user_manage()
 

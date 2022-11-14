@@ -1,0 +1,28 @@
+{% extends '../main.html' %}
+{% load i18n %}
+
+{% block content %}
+<p>{% blocktranslate %}The <strong>StrainBrowser</strong> currently contains 
+{{ breeder_count }} breeders with a total of {{ strain_count }} strains.
+{% endblocktranslate %}</p>
+<p>{% blocktranslate %}To start browsing out strains visit our 
+<a href="{{ url_breeder_home }}">Breeder List</a> or use the search filed 
+below.{% endblocktranslate %}
+{% if user_breeder_add %}
+{% blocktranslate %}If the breeder you searched for is
+not in our database you might want to 
+<a href="{{ url_breeder_add }}">add that breeder</a>.{% endblocktranslate %}
+{% endif %}
+{% if user_strain_add %}{% blocktranslate %}If found the breeder you searched
+for, but the database doesn't contain the specified strain entry, visit the 
+breeder overview of that breeder and and add the strain there.{% endblocktranslate %}
+{% endif %}</p>
+
+<div class='search-field'>
+    <h2>{% translate "Search a strain" %}</h2>
+    <form class='search-form' action="{% url 'strainbrowser:strain_search' %}">
+        <input name='search' type='text' required>
+        <input type='submit' value="{% translate 'Search' %}">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class='sidebar-section'>
+    <span class='sidebar-section-title'>{% translate "StrainBrowser" %}</span>
+    <div class='sidebar-entry'>
+        <a href="{% url 'strainbrowser:breeder' %}">{% translate "Breeder List" %}</a>
+    </div>
+    <div class="sidebar-entry">{% translate "Search Strain" %}<br>
+        <form class='sidebar-form' action="{% url 'strainbrowser:strain_search' %}">
+            <input name='search' type='text' required><br>
+            <input type='submit' value="{% translate 'Search' %}">
+        </form>
+    </div>
+</div>

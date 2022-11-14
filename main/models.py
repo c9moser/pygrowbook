@@ -193,10 +193,26 @@ class User(AbstractBaseUser,PermissionsMixin):
                 if self.is_in_group(group_name):
                     self.remove_from_group(group_name)
     # User.remove_superuser()
+    
+    def make_site_operator(self):
+        if not self.is_superuser:
+            self.make_superuser()
+            
+        for group_name in config.SITE_OPERATOR_GROUPS:
+            if not self.is_in_group(group_name):
+                self.add_to_group(group_name)
+    # User.make_site_operator()
+    
+    def remove_site_operator(self):
+        for group_name in config.SITE_OPERATOR_GROUPS:
+            if self.is_in_group(group_name):
+                self.remove_from_group(group_name)
+    # User.remove_site_operator()
 # User class
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     avatar = models.ImageField(null=True,upload_to='avatars/')
     languages = models.ManyToManyField(Language)
+# UserProfile class
 

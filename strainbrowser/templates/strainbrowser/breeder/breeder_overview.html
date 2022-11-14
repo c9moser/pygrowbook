@@ -1,0 +1,56 @@
+{% extends "../main.html" %}
+{% load i18n %}
+{% block content %}
+{% if breeder.user_edit %}
+<div class='button'>
+    <a href="{% url 'strainbrowser:breeder_edit' breeder.key %}">{% translate "Edit Breeder" %}</a>
+</div>
+{% endif %}
+{% if user_strain_add %}
+<div class='button'>
+    <a href="{% url 'strainbrowser:strain_add' breeder.key">{% translate "Add a Strain" %}</a>
+</div>
+{% endif %}
+{% if breeder.user_edit or user_strain_add %}
+<br><br>
+{% endif %}
+
+{% if breeder.homepage %}
+<div class='button'>
+    <a href="{{ breeder.homepage }}">{% translate "Breeder Homepage" %}</a>
+</div>
+{% endif %}
+{% if breeder.seedfinder %}
+<div class='button'>
+    <a href="{{ breeder.seedfinder }}">{% translate "Seedfinder.eu" %}</a>
+</div>
+{% endif}
+{% if breeder.seedfinder or breeder.homepage %}
+<br>
+{% endif %}
+
+<table class='overview-table'>
+    <tr>
+        <th>{% translate "Strain" %}</th>
+        <th>{% translate "Added by" %}</th>
+        <th>{% translate "Actions" %}</th>
+    </tr>
+    {% for strain in strain_list %}
+    <tr>
+        <td><a href="{% url 'strainbrowser:strain' breeder.key strain.key">strain.name</a></td>            
+        <td>strain.added_by.name</td>
+        <td>{% if strain.user_edit %}
+            <div class='button'>
+                <a href="{% url 'strainbrowser:strain_edit' breeder.key strain.key %}">{% translate "Edit" %}</a>
+            </div>
+        {% endif %} 
+        {% if user_strain_delete %}
+            <div class='button'>
+                <a href="{% url 'strainbrowser:strain_delete' breeder.key strain.key %}">{% translate "Delete" %}</a>
+            </div>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

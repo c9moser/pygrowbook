@@ -1,5 +1,8 @@
 #-*- coding:utf-8 -*-
 from django.contrib.auth.models import Group,Permission
+from django.contrib.contenttypes.models import ContentType
+from .models import Language
+
 from . import config
 
 def get_group(group):
@@ -86,4 +89,44 @@ def create_project_groups():
                 pass
 # def create_project_groups()
 
+def create_extra_permissions():
+    for perm_str,description,model in config.EXTRA_PERMISSIONS:
+        try:
+            perm = Permission.objects.get(codename=perm_str)
+            perm.name = description
+            perm.save()
+        except Permission.DoesNotExist:
+            content_type = ContentType.objects.get_by_model(model)
+            perm = Permission.objects.create(codename=perm_str,
+                                             name=description,
+                                             content_type=content_type)
+    
+def init_project():
+    Language.update()
+    create_extra_permissions()
+    create_project_groups()
+# init_project()
+
+def get_sidebar_context(user):
+    context = {
+        'user_is_group_manager': False,
+        'user_can_manage_users': False,
+        'user_is_user_manager': False,
+        'user_is_forum_operator':False,
+        'user_is_strainbrowser_operator':False,
+        'user_is_wiki_operator':False,
+    }  
+    if user and user.is_authenticated:
+        if user.has_perm('group.manage'):
+            context['user_is_group_manager'] = True
+        if user.has_perm('user.manage'):
+            context['user_can_manage_users'] = True
+            context['user_is_user_manager'] = True
+        if user.has_perm('strainbrowser.operator'):
+            context['user_can_manage_users'] = True
+            context['user_is_strainbrowser_operator'] = True
+        #TODO
+        
+    return context
+# get_sidebar_context()
 

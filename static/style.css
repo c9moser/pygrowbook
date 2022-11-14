@@ -1,6 +1,8 @@
 body {
     background-color:#111F10;
     color:#FFFFFF;
+    padding:0px;
+    margin: 0px;
 }
 
 .navbar {
@@ -19,6 +21,7 @@ body {
     
     font-size:22px;
 }
+
 .navbar a:visited {
     padding: 10px 20px;
     color:#AACAA8;
@@ -32,6 +35,53 @@ body {
     background-color:#1F1F1F;
 }
 
+.left-sidebar {
+    width: 200px;
+    position: fixed;
+    top:1;
+    left:0;
+    z-index: 1;
+    overflow-x: hidden;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.sidebar-section {
+    background: #0C0C0C;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.sidebar-section-title {
+    font-size: 18px;3
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.sidebar-entry {
+    padding: 5px 15px;
+}
+
+.sidebar-entry a:link {
+    color: #AACAA8;
+    text-decoration: none;
+}
+
+.sidebar-entry a:visited {
+    color: #AACAA8;
+    text-decoration: none;
+}
+
+.content {
+    position: fixed;
+    top:1;
+    left:1;
+    z-index: 1;
+    margin-left: 210px;
+    margin-right: 10px;    
+}
 
 .message-important {
     text-decoration-line:underline;

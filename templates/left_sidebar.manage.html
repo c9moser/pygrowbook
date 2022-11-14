@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% if user_can_manage_users %}
+<div class='sidebar-section'>
+    <span class='sidebar-section-title'>{% translate "User Management" %}</span>
+    {% if user_is_group_manager %}
+    <div class='sidebar-entry'>
+        <a href="{% url 'user_index' %}">{% translate "Manage Users" %}</a>
+    </div>
+    {% endif %}
+    {% if user_is_forum_operator %}
+    <div class='sidebar-entry'>
+        <a href='#'>{% translate "Forum users" %}</a>
+    </div>
+    {% endif %}
+    {% if user_is_wiki_operator %}
+    <div class='sidebar-entry'>
+        <a href='#'>{% translate "Wiki users" %}</a>
+    </div>
+    {% endif %}
+    {% if user_is_strainbrowser_operator %}
+    <div class='sidebar-entry'>
+        <a href='#'>{% translate "StrainBrowser Users" %}</a>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if user_is_group_manager %}
+<div class='sidebar-section'>
+    <span class='sidebar-section-title'>{% translate "Group Management" %}</span>
+    <div class='sidebar-entry'>
+        <a href="{% url 'group_index' %}">{% translate "Manage Groups" %}</a>
+    </div>
+</div>
+{% endif %}
+

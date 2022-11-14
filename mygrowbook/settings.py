@@ -15,7 +15,7 @@ import main
 
 from django.utils.translation import gettext_lazy as _
 
-from .private_settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,SECRET_KEY
+from .private_settings import *
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,11 +36,11 @@ PASSWORD_MIN_LENGTH = 8
 
 INSTALLED_APPS = [
     'main.apps.MainConfig',
-    'settings.apps.SettingsConfig',
+    'strainbrowser.apps.StrainbrowserConfig',
     'forum.apps.ForumConfig',
     'growlog.apps.GrowlogConfig',
-    'strains.apps.StrainsConfig',
     'wiki.apps.WikiConfig',
+    'settings.apps.SettingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

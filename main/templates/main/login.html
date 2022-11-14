@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block content %}
 <div class='login-form'>
-    <form action="{% url 'main:login' %}" method='post'>
+    <form action="{% url 'login' %}" method='post'>
         {% csrf_token %}
         <input type='hidden' id='next' name='next' value="{{ next }}">
         {% if error %}<span class='message-error'>{{ error }}</span><br>{% endif %}
@@ -11,15 +11,9 @@
             <tr><td>{% translate "Password:" %}</td><td><input name="password" id="password" type="password" required></td></tr>
         </table>
         <input type='submit' value="{% translate 'Log in' %}"><br><br>
-        <a class='button' href="{% url 'main:password_reset_request' %}">{% translate "I forgot my password" %}</a>
+        <a class='button' href="{% url 'password_reset_request' %}">{% translate "I forgot my password" %}</a><br>
+        <a class='button' href="{% url 'signup' %}">{%translate "Sign up" %}</a>
     </form>
-    <div class='message-info'>
-        <ul>
-        {% for passwd_help in password_validators_help %}
-            <li>passwd_help</li>
-        {% endfor %}
-        </ul>
-    </div>    
 </div>
 {% endblock %}
 

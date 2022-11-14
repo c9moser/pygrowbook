@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load static %}
+<head>
+    <meta charset="utf-8" />
+    {% if author %}
+        <meta name='author' content="{{ author }}">
+    {% else %}
+        <meta name="author" content="Christian Moser" />
+    {% endif %}
+
+    {% if head_description %}
+        <meta name="description" content="{{ head_description }}">
+    {% else %}
+        <meta name="description" content="{% translate 'MyGrowBook homepage' %}">
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    {% if head_title %}
+        <title>{{ head_title }}</title>
+    {% else %}
+        <title>MyGrowBook</title>
+    {% endif %}
+</head>
+
