@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 from django.contrib.auth.models import Group,Permission
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import gettext as _
 from .models import Language
 
 from . import config
@@ -130,3 +131,19 @@ def get_sidebar_context(user):
     return context
 # get_sidebar_context()
 
+def get_supported_languages():
+    """
+        @return a 2-tuple (language_code,language_name)
+    """
+    languages = []
+    for lang in Language.objects.all()
+        inserted = False
+        name = _(lang.name)
+        for j in range(len(languages)):
+            if name < languages[j][1]:
+                inserted = True
+                languages.insert(j,(lang.locale,name))
+        if not inserted:
+            lang.append((lang.locale,name))
+    return languages
+# get_supported_languages()

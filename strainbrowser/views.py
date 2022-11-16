@@ -9,7 +9,7 @@ from .models import Breeder,Strain,StrainBackup
 
 from main import config
 from .functions import get_context_variables
-
+from .forms import BreederForm,StrainForm,StrainTranslationForm
 
 # Create your views here.
 
@@ -80,7 +80,7 @@ def breeder_overview(request,breeder_key):
 # breeder_overview()
 
 
-@permission_required('strainbrowser.breeder.add')
+@permission_required('strainbrowser.breeder.add',login_url=reverse('login'))
 def breeder_add(request):
     html_template='strainbrowser/breeder/breeder_edit.html'
     context = {
@@ -89,38 +89,37 @@ def breeder_add(request):
         'title': _('Add a new Breeder'),
         'head_title': _("MyGrowBook: Breeder Add"),
         'head_description': _('Add a new Breeder'),
-        'breeder_name': "",
-        'breeder_key': "",
-        'breeder_homepage': "",
-        'breeder_seedfinder': "",
-        'error_message': None,
+        'error_messages' : [],
     }
     context.update(get_context_variables(request.user))
     
+    data = {
+        'primary_key': 0,        
+    }
+
     if request.method == 'POST':
-        context['breeder_name'] = request.POST['name']
-        context['breeder_key'] = slugify(request.POST['key'])
-        context['breeder_homepage'] = request.POST['homepage']
-        context['breeder_seedfinder'] = request.POST['seedfinder']
+        form = BreederForm(request.POST,initial=data)
+        context['form'] = form
+        if not form.validate():
+            return form.render(template_name=html_template,context=context)
         
+        cdata = form.cleaned_data()
         try:
-            Breeder.objects.get(name=context['breeder_name'])
-            context['error_message'] = _(
-                'A Breeder with name "{breeder_name}" already exists!').format(breeder_name=context['breeder_name'])
-            return render(request,html_template,context)
+            Breeder.objects.get(name=cdata['name'])
+            context['error_messages'].append(
+                _('A Breeder with name "{breeder_name}" already exists!').format(breeder_name=cdata['name'])
         except Breeder.DoesNotExist:
             pass
             
-        if context['breeder_key'] != request.POST['key']:
-            context['error_message']=_('"{key}" is not a valid key!').format(key=request.POST['key'])
-            return render(request,html_template,context)
-            
         try:
-            Breeder.objects.get(key=context['breeder_key'])
-            context['error_message'] = _('Breeder key "{key}" is already in use').format(key=context['breeder_key'])
-            return render(request,html_template,context)
+            Breeder.objects.get(key=cdata['key'])
+            context['error_messages'].append(
+                _('Breeder key "{breeder_key}" is already in use').format(breeder_key=cdata['key'])
         except Breeder.DoesNotExist:
             pass
+            
+        if context.error_messages:
+            return form.render(template_name=html_template,context=context)
             
         try:
             breeder = Breeder.objects.create(key=context['breeder_key'],
@@ -131,12 +130,12 @@ def breeder_add(request):
                                              edited_by=request.user)
             return redirect(reverse('strainbrowser:breeder_overview', args=(breeder.key,)))
         except:
-            context['error_message'] = _("Unable to add breeder to database!")
+            context['error_messages'].append(_("Unable to add breeder to database!"))
         
-    return render(request,html_template,context)
+    return form.render(template_name=html_template,context)
 # breeder_add()
 
-@login_required(login_url='/login')
+@login_required(login_url=reverse('login'))
 def breeder_edit(request,breeder_key):
     breeder = get_object_or_404(Breeder,key=breeder_key)
     
@@ -195,7 +194,7 @@ def breeder_edit(request,breeder_key):
     return render(request,html_template,context)
 # breeder_edit
 
-@permission_required('strainbrowser.breeder.delete',login_url='/login')
+@permission_required('strainbrowser.breeder.delete',login_url=reverse('login'))
 def breeder_delete(request,breeder_key):
     #TODO
     return HttpResponse("strainbrowser/breeder_delete/{}/".format(breeder_key))

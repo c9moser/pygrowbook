@@ -4,7 +4,6 @@ from django.core.validators import URLValidator,validate_slug
 from django.conf import settings
 from main.models import User
 from main.models import Language
-
 # Create your models here.
 
 class Breeder(models.Model):

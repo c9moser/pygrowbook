@@ -2,29 +2,23 @@
 {% load i18n %}
 
 {% block content %}
-{% if error_message %}
-<span class='message-error'>{{ error_message }}</span>
-<br>
+{% if error_messages %}
+<div class='message-error'>
+    <ul>
+    {% for error in error_messages %}
+        <li>{{ error }}</span></li>
+    {% endfor %}
+    </ul>
+</div>
 {% endif %}
 <form class='content-form' method='post'>
     {% csrf_token %}
+    {{ form.primary_key }}
     <table>
-        <tr>
-            <td>{% translate "Breeder name:" %}</td>
-            <td><input type='text' name='name' value="{{ breeder_name }}" required></td>
-        </tr>
-        <tr>
-            <td>{% translate "Breeder Key:" %}</td>
-            <td><input type='text' name='key' value="{{ breeder_key }}" required></td>
-        </tr>
-        <tr>
-            <td>{% translate "Homepage:" %}</td>
-            <td><input type='text' name='homepage' value="{{ breeder_homepage }}"></td>
-        </tr>
-        <tr>
-            <td>{% translate "Seedfinder:" %}</td>
-            <td><input type='text' name='seedfinder' value="{{ breeder_seedfinder }}"></td>
-        </tr>
+        {{ form.name.as_table }}
+        {{ form.key.as_table }}
+        {{ form.homepage.as_table }}
+        {{ form.seedfinder.as_table }}
     </table>
     <input type='submit' value="{% translate 'Add Breeder' %}">
 </form>
