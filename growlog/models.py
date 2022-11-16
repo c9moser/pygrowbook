@@ -32,7 +32,6 @@ class Growlog(models.Model):
         return self.title
 # Growlog class
 
-
 class GrowlogEntry(models.Model):
     growlog = models.ForeignKey(Growlog,
                                 on_delete=models.CASCADE,
@@ -43,3 +42,7 @@ class GrowlogEntry(models.Model):
     edited_on = models.DateTimeField(auto_now=True)
 # GrowlogEntry class
 
+class GrowlogEntryImage(models.Model):
+    entry = ForeignKey(GrowlogEntry,
+                       required=True)
+    image = ImageField(upload_to='growlog/')
