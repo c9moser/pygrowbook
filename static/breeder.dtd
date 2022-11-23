@@ -1,0 +1,19 @@
+<?xml.version="1.0" encoding="UTF-8"?>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT homepage (#PCDATA)>
+<!ELEMENT seedfinder (#PCDATA)>
+<!ELEMENT info (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT translation (user,homepage?,seedfinder?,info?,description?)>
+<!ATTLIST translation
+    language CDATA #REQUIRED>
+<!ELEMENT translations (translation+)>
+<!ELEMENT strain (user,name,homepage?,seedfinder?,info?,description?,translations?)>
+<!ATTLIST strain
+    key CDATA #REQUIRED
+    user CDATA #IMPLIED>
+<!ELEMENT strains (strain+)>
+<!ELEMENT breeder(name,homepage?,seedfinder?,strains?)>
+<!ATTLIST breeder
+    key CDATA #REQUIRED
+    user CDATA #IMPLIED>

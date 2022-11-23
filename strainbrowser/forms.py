@@ -1,4 +1,4 @@
-from django import Forms
+from django import forms
 from django.utils.translation import gettext_lazy as _
 from main.functions import get_supported_languages
 from main.config import get_locale
@@ -26,21 +26,23 @@ class StrainForm(forms.Form):
     breeder_key = forms.SlugField(widget=forms.HiddenInput(),
                                   max_length=64,
                                   required=True)
-    name = forms.CharField(label=_('Strain Name:')
+    name = forms.CharField(label=_('Strain Name:'),
                            max_length=128,
                            required=True)
-    key = forms.SlugField(label=_('Strain Key:')
+    key = forms.SlugField(label=_('Strain Key:'),
                           max_length=64,
                           required=True)
-    homepage = forms.URLField(label=_('Homepage:')
+    homepage = forms.URLField(label=_('Homepage:'),
                               max_length=512,
                               required=False)
     seedfinder = forms.URLField(label=_('Seedfinder.eu:'),
                                 max_length=512,
                                 required=False)
-    info = forms.TextField(label=_('Info:'),
+    info = forms.CharField(widget=forms.Textarea(),
+                           label=_('Info:'),
                            required=False)
-    description = forms.TextField(label=_('Description'),
+    description = forms.CharField(widget=forms.Textarea(),  
+                                  label=_('Description'),
                                   required=False)
 # StrainForm class
                                   
@@ -53,21 +55,20 @@ class StrainTranslationForm(forms.Form):
                                  required=True)
     strain_id = forms.IntegerField(widget=forms.HiddenInput(),
                                    required=True)
-    homepage = URLField(label=_('Homepage:'),
-                        max_length=512,
-                        required=False)
-    seedfinder = URLField(label=_('Seedfinder.eu'),
-                          max_length=512,
-                          required=False)
-    info = TextField(label=_('Info:'),
-                     required=False)
-    description = TextField(label=_('Description:'),
-                            required=False)
+    language = forms.CharField(widget=forms.HiddenInput(),required=True)
+    homepage = forms.URLField(label=_('Homepage:'),
+                                      max_length=512,
+                                      required=False)
+    seedfinder = forms.URLField(label=_('Seedfinder.eu'),
+                                max_length=512,
+                                required=False)
+    info = forms.CharField(widget=forms.Textarea(),
+                           label=_('Info:'),
+                           required=False)
+    description = forms.CharField(widget=forms.Textarea(),
+                                  label=_('Description:'),
+                                  required=False)
                             
     def __init__(self,*args,**kwargs):
         super(StrainTranslationForm,self).__init__(*args,**kwargs)
-        self.fields['language'] = forms.ChoiceField(label=_("Language:"),
-                                                    choices=get_supported_languages(),
-                                                    required=True,
-                                                    initial=get_locale())
 # StrainTranslationForm class

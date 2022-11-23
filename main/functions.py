@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from .models import Language
 
 from . import config
+from growlog.config import init_app as init_growlog_app
 
 def get_group(group):
     if isinstance(group,Group):
@@ -106,6 +107,7 @@ def init_project():
     Language.update()
     create_extra_permissions()
     create_project_groups()
+    init_growlog_app()
 # init_project()
 
 def get_sidebar_context(user):
@@ -136,7 +138,7 @@ def get_supported_languages():
         @return a 2-tuple (language_code,language_name)
     """
     languages = []
-    for lang in Language.objects.all()
+    for lang in Language.objects.all():
         inserted = False
         name = _(lang.name)
         for j in range(len(languages)):
@@ -144,6 +146,6 @@ def get_supported_languages():
                 inserted = True
                 languages.insert(j,(lang.locale,name))
         if not inserted:
-            lang.append((lang.locale,name))
+            languages.append((lang.locale,name))
     return languages
 # get_supported_languages()

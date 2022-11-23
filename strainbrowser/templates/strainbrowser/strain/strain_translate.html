@@ -1,0 +1,52 @@
+{% extends '../main.html' %}
+{% load i18n %}
+{% load markdownify %}
+
+{% block content %}
+{% if error_messages %}
+<div class='message-error'>
+    <ul>
+    {% for error in error_messages %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<form class='content-form' method='post'>
+    {% csrf_token %}
+    {{ form.breeder_key }}
+    {{ form.strain_key }}
+    {{ form.strain_id }}
+    <table>
+        <tr>
+            <th>{% translate "Language:" %}</th>
+            <td>{{ form.language }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Homepage:" %}</th>
+            <td>{{ form.homepage }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Seedfinder.eu:" %}</th>
+            <td>{{ form.seedfinder }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Info (original):" %}</th>
+            <td>{{ strain.info | markdownify }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Info (translated):" %}</th>
+            <td>{{ form.info }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Description (original):" %}</th>
+            <td>{{ strain.description | markdownify }}</td>
+        </tr>
+        <tr>
+            <th>{% translate "Description (translated):" %}</th>
+            <td>{{ form.description }}</td>
+        </tr>
+    </table>
+    <input type='submit' value="{{ submit_button }}">
+</form>
+{% endblock %}

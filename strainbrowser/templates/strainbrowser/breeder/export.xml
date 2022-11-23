@@ -1,0 +1,35 @@
+{% load static %}
+<?xml version="1.0" exncoding="UTF-8"?>
+<!DOCTYPE breeder PUBLIC "-//MYGROWBOOK//breeder 1.0" "http://{{ domain }}{% static breeder.dtd %}">
+<breeder key="{{ breeder.key }}" user="{{ breeder.added_by.name }}">
+    <name>{{ breeder.name }}</name>
+    {% if breeder.homepage %}<homepage>{{ breeder.homepage }}</homepage>{% endif %}
+    {% if breeder.seedfinder %}<seedfinder>{{ breeder.seedfinder }}</seedfinder>{% endif %}
+    {% if breeder.strain_set.all %}
+    <strains>
+        {% for strain in breeder.strain_set.all %}
+        <strain key="{{ strain.key }}" user="{{ strain.added_by.name }}">
+            <name>{{ strain.name }}</name>
+            <user>{{ strain.added_by.name }}</user>
+            {% if strain.homepage %}<homepage>{{ strain.homepage }}</homepage>{% endif %}
+            {% if strain.seedfinder %}<seedfinder>{{ strain.seedfinder }}</seedfinder>{% endif %}
+            {% if strain.info %}<info>{% autoescape on %}{{ strain.info }}{% endautoescape %}</info>{% endif %}
+            {% if strain.description %}<description>{% autoescape on %}{{ strain.description }}{% endautoescape %}</description>{% endif %}
+            {% if strain.translation_set.all %}
+            <translations>
+                {% for translation in strain.straintranslation_set.all %}
+                <translation language="{{ translation.language.locale }}">
+                    <user>{{ translation.added_by.name }}</user>
+                    {% if translation.homepage %}<homepage>{{ translation.homepage }}</homepage>{% endif %}
+                    {% if translation.seedfinder %}<seedfinder>{{ translation.seedfinder }}</seedfinder>{% endif %}
+                    {% if translation.info %}<info>{{ translation.info }}</info>{% endif %}
+                    {% if translation.description %}<description>{{ translation.description }}</description>{% endif %}
+                </translation>
+                {% endfor %}
+            </translations>
+            {% endif %}
+        </strain>
+        {% endfor %}
+    </strains>
+    {% endif %}
+</breeder>

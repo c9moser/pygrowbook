@@ -1,12 +1,4 @@
-{% extends 'main.html' %}
-{% load i18n %}
-
-{% block left_sidebar %}
-{% include '../left_sidebar.html' %}
-{% endblock %}
-
-{% block content %}
-<p><strong>mygrowbook<strong> ist eine Webseite von Züchtern für Züchter.
+<p><strong>GrowBook.org<strong> ist eine Webseite von Züchtern für Züchter.
 Wir bieten ein <a href="{% url 'forum:index' }%">Forum</a>, einen
 <a href="{% url 'wiki:index' %}">Wiki</a>, eine
 <a href="{% url 'growlog:index' %}">Growlog Sektion</a> und einen
@@ -15,4 +7,3 @@ Wir bieten ein <a href="{% url 'forum:index' }%">Forum</a>, einen
 <p>Wir sind <span class='message-important'>kein Shop</span> und auch
 <span class='message-important'>keine Handelsplattform für Cannabis</span>.
 Handeln mit Cannabis auf dieser Seite führt unweigerlich zu einer Sperre!</p>
-{% endblock %}

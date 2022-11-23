@@ -21,23 +21,24 @@ from . import config,functions
 def index(request):
     language_code = config.get_locale()
     try:
-        index_template = config.INDEX_TEMPLATE[language_code]
+        info_template = config.INFO_TEMPLATE[language_code]
     except KeyError:
-        index_template = 'main/index/index.html'
+        info_template = 'main/index/info.html'
         
     context = {
         'user':request.user,
         'language_code':language_code,
+        'info_template':info_template,
     }
     
     context.update(functions.get_sidebar_context(request.user))
     
     if request.user.is_authenticated:
-        context['title'] = _("Welcome {username} to MyGrowBook".format(username=request.user.get_full_name()))
+        context['title'] = _("Welcome {username} to GrowBook.org".format(username=request.user.get_full_name()))
     else:
-        context['title'] = _("Welcome to MyGrowBook")
+        context['title'] = _("Welcome to GrowBook.org")
     
-    return render(request,index_template,context)
+    return render(request,'main/index/index.html',context)
 
 def login(request):
     context={
@@ -201,6 +202,10 @@ def user(request):
     return HttpResponse('/user/')
 # user()
     
+def user_view(request,user_id):
+    return HttpResponse('/user/{}/'.format(user_id))
+# user_view()
+
 @permission_required('user.manage',login_url='/login/')
 def user_manage(request,user_id):
     return HttpResponse('/user/{}/'.format(user_id))

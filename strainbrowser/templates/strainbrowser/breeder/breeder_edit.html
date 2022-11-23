@@ -15,11 +15,8 @@
     {% csrf_token %}
     {{ form.primary_key }}
     <table>
-        {{ form.name.as_table }}
-        {{ form.key.as_table }}
-        {{ form.homepage.as_table }}
-        {{ form.seedfinder.as_table }}
+        {{ form.as_table }}
     </table>
-    <input type='submit' value="{% translate 'Add Breeder' %}">
+    <input type='submit' value="{{ submit_button }}">
 </form>
 {% endblock %}

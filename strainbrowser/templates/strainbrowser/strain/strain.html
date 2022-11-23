@@ -1,3 +1,66 @@
 {% extends '../main.html' %}
+{% load i18n %}
+{% load markdownify %}
 {% block content %}
+<div class='buttonbox'>
+    {% if strain.locale_homepage %}
+    <span class='button'>
+        <a href="{{ strain.locale_homepage }}">{% translate "Homepage" %}</a>
+    </span>
+    {% endif %}
+    {% if strain.locale_seedfinder %}
+    <span class='button'>
+        <a href="{{ strain.locale_seedfinder }}">{% translate "Seedfinder.eu" %}</a>
+    </span>
+    {% endif %}
+    {% if strain.user_can_edit %}
+    <span class='button'>
+        <a href="{% url 'strainbrowser:strain_edit' strain.breeder.key strain.key %}">
+            {% translate "Edit" %}
+        </a>
+    </span>
+    {% endif %}
+    {% if strain.user_can_translate %}
+    <span class='button'>
+        <a href="{% url 'strainbrowser:strain_translate' strain.breeder.key strain.key language_code %}">
+            {% translate "Translate"%}
+        </a>
+    </span>
+    {% endif %}
+</div>
+<div>
+    <div class='strain-info'>
+    {% if strain.locale_info %}
+        <h2>{% translate "Information" %}</h2>
+        {% autoescape off %}
+        {{ strain.locale_info | markdownify }}
+        {% endautoescape %}
+    {% endif %}
+    </div>
+
+    <div class='strain-description'>
+    {% if strain.locale_description %}
+        <h2>{% translate "Description" %}</h2>
+        {{ strain.locale_description | markdownify }}
+    {% endif %}
+    </div>
+</div>
+
+{% if growlogs %}
+<table class='strain-info'>
+    <tr>
+        <th>{% translate "Title" %}</th>
+        <th>{% translate "User" %}</th>
+        <th>{% translate "Language" %}</th>
+    </tr>
+    {% for growlog in strain_growlogs %}
+    <tr>
+        <td><a href="{% url 'growlog:growlog' growlog.id }%">{{ growlog.title }}</a></td>
+        <td>{{ growlog.created_by.name }}</td>
+        <td>{{ growlog.language_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 {% endblock %}

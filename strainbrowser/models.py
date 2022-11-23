@@ -2,8 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import URLValidator,validate_slug
 from django.conf import settings
+import datetime
+
 from main.models import User
 from main.models import Language
+from main import config
+
 # Create your models here.
 
 class Breeder(models.Model):
@@ -21,12 +25,12 @@ class Breeder(models.Model):
                                 default="",
                                 validators=[URLValidator(schemes=settings.URL_WEBSITE_SCHEMES)])
     added_by = models.ForeignKey(User,
-                                 related_name='breeder_added_by',
+                                 related_name='breeder_added',
                                  null=True,
                                  on_delete=models.SET_NULL)
     added_on = models.DateTimeField(auto_now_add=True)
     edited_by = models.ForeignKey(User,
-                                  related_name='breeder_edited_by',
+                                  related_name='breeder_edited',
                                   null=True,
                                   on_delete=models.SET_NULL)
     edited_on = models.DateTimeField(auto_now=True)
@@ -63,17 +67,15 @@ class Strain(models.Model):
     description = models.TextField(default="",
                                    blank=True)
     added_by = models.ForeignKey(User,
-                                   editable=False,
-                                   related_name='strain_added_by',
-                                   null=True,
-                                   on_delete=models.SET_NULL)
+                                 editable=False,
+                                 related_name='strain_added',
+                                 on_delete=models.RESTRICT)
     added_on = models.DateTimeField(auto_now_add=True,
-                                      editable=False)
+                                    editable=False)
     edited_by = models.ForeignKey(User,
                                   editable=False,
-                                  related_name='strain_edited_by',
-                                  null=True,
-                                  on_delete=models.SET_NULL)
+                                  related_name='strain_edited',
+                                  on_delete=models.RESTRICT)
     edited_on = models.DateTimeField(auto_now=True,
                                      editable=False)
     
@@ -85,21 +87,73 @@ class Strain(models.Model):
             ('strainbrowser.strain.delete',_("Allowed to delete strains")),
         ]
 
-    def validate(self):
-        try:
-            breeder = Breeder.objects.get(pk=self.breeder.id)
-        except Breeder.DoesNotExist:
-            raise ValidationError('Breeder does not exist!')
-            
-        try:
-            s = breeder.strain_set.get(key=self.key)
-            if s.id != self.id:
-                raise ValidationError(_('Breeder-key is already in use!'))
-        except Strain.DoesNotExist:
-            pass
-            
     def __str__(self):
         return self.name
+
+    def get_growlogs(self,user=None):
+        growlog_list = []
+        for growlog in self.growlog_set.all().order_by('title'):
+            if growlog.is_visible(user):
+                growlog_list.append(growlog)   
+        return growlog_list
+    # Strain.get_growlogs()
+    
+    @property
+    def locale(self):
+        locale = config.get_locale()
+        if locale != 'en-US':
+            try:
+                self.straintranslation_set.get(language__name=locale)
+                return locale
+            except StrainTranslation.DoesNotExist:
+                pass
+        return 'en-US'
+    # Strain.locale
+    
+    @property
+    def locale_translation(self):
+        locale = config.get_locale()
+        try:
+            translation = self.straintranslation_set.get(language__locale=locale)
+            return translation
+        except StrainTranslation.DoesNotExist:
+            pass
+        except Exception as error:
+            print(error)
+        return None
+    # Strain.locale_translation
+    
+    @property
+    def locale_description(self):
+        translation = self.locale_translation
+        if translation and translation.description:
+            return translation.description
+        return self.description
+    # Strain.locale_description
+    
+    @property
+    def locale_info(self):
+        translation = self.locale_translation
+        if translation and translation.info:
+            return translation.info
+        return self.info
+    # Strain.locale_info
+        
+    @property
+    def locale_seedfinder(self):
+        translation = self.locale_translation
+        if translation and translation.seedfinder:
+            return translation.seedfinder
+        return self.seedfinder
+    # Strain.locale_seedfinder
+    
+    @property
+    def locale_homepage(self):
+        translation = self.locale_translation
+        if translation and translation.homepage:
+            return translation.homepage
+        return self.homepage
+    
 # Strain class
 
 class StrainTranslation(models.Model):
@@ -118,16 +172,16 @@ class StrainTranslation(models.Model):
     info = models.TextField(default="")
     description = models.TextField(default="")
     added_by = models.ForeignKey(User,
-                                 related_name='strain_translation_added_by',
+                                 related_name='strain_translation',
                                  editable=False,
                                  null=True,
-                                 on_delete=models.SET_NULL)
+                                 on_delete=models.RESTRICT)
     added_on = models.DateTimeField(auto_now_add=True)
     edited_by = models.ForeignKey(User,
-                                  related_name='strain_translation_edited_by',
+                                  related_name='strain_translation_edited',
                                   editable=False,
                                   null=True,
-                                  on_delete=models.SET_NULL)
+                                  on_delete=models.RESTRICT)
     edited_on = models.DateTimeField(auto_now=True)
     
     def validate(self):
@@ -142,9 +196,13 @@ class StrainTranslation(models.Model):
             
 class StrainBackup(models.Model):
     strain = models.ForeignKey(Strain,on_delete=models.RESTRICT)
+    strain_translation = models.ForeignKey(StrainTranslation,
+                                           null=True,
+                                           on_delete=models.RESTRICT)
     language = models.ForeignKey(Language,
                                  related_name='language',
                                  on_delete=models.RESTRICT)
+    key = models.CharField(max_length=64)
     name = models.CharField(max_length=256)
     homepage = models.CharField(max_length=512,
                                 null=True,
@@ -158,16 +216,15 @@ class StrainBackup(models.Model):
     description = models.TextField(null=True,blank=True)
     edited_by = models.ForeignKey(User,
                                   editable=False,
-                                  related_name='strain_backup_edited_by',
-                                  on_delete=models.SET_NULL,
-                                  null=True)
+                                  related_name='strain_backup_edited',
+                                  on_delete=models.RESTRICT)
     edited_on = models.DateTimeField(editable=False)
     
     backup_by = models.ForeignKey(User,
                                   editable=False,
-                                  related_name='strain_backup_by',
-                                  on_delete=models.SET_NULL,
-                                  null=True)
-    backup_on = models.DateTimeField(auto_now=True,
+                                  related_name='strain_backup',
+                                  on_delete=models.RESTRICT)
+    backup_on = models.DateTimeField(auto_now_add=True,
                                      editable=False)
-                                    
+# StrainBackup class
+

@@ -1,41 +1,26 @@
-{% extend "../main.html" %}
+{% extends "../main.html" %}
 {% load i18n %}
 {% block content %}
-{% if error_message %}
-<span class='message-error'>{{ error_message }}</span>
+{% if error_messages %}
+<div class='message-error'>
+    <ul>
+    {% for error in error_messages %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+</div>
 {% endif %}
 <form class='content-form' method='post'>
     {% csrf_token %}
-    <input type='hidden' name='breeder_key' value="{{ breeder.key }}">
+    {{ form.breeder_key }}
+    {{ form.primary_key }}
     <table>
         <tr>
-            <td>{% translate "Breeder:" %}</td>
+            <th>{% translate "Breeder:" %}</th>
             <td>{{ breeder.name }}</td>
         </tr>
-        <tr>
-            <td>{% translate "Name:" %}</td>
-            <td><input type='text' name='name' value="{{ strain_name }}" required></td>
-        </tr>
-        <tr>
-            <td>{% translate "Key:" %}</td>
-            <td><input type='text' name='key' value="{{ strain_key }}" required></td>
-        </tr>
-        <tr>
-            <td>{% translate "Homepage:" %}</td>
-            <td><input type='url' name='homepage' value="{{ strain_homepge }}"></td>
-        </tr>
-        <tr>
-            <td>{% translate "Seedfinder:" %}</td>
-            <td><input type='url' name='seedfinder' value="{{ strain_seedfinder }}"></td>
-        </tr>
-        <tr>
-            <td>{% translate "Info:" %}</td>
-            <td><textarea name='info'>{{ strain_info }}</textarea></td>
-        </tr>
-        <tr>
-            <td>{% translate "Description:" %}</td>
-            <td><textarea name='description'>{{ strain_description }}</textarea></td>
-        </tr>
+        {{ form.as_table }}
     </table>
+    <input type='submit' value="{{ submit_button }}">
 </form>
 {% endblock %}

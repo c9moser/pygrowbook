@@ -25,6 +25,7 @@ urlpatterns = [
     path('group/',views.group,name='group_index'),
     path('group/<int:group_id>/',views.group_manage,name='group_manage'),
     path('user/',views.user,name='user_index'),
-    path('user/<int:user_id>/',views.user_manage,name='user_manage'),
+    path('user/<int:user_id>',views.user_view,name='user_view'),
+    path('manage_user/<int:user_id>/',views.user_manage,name='user_manage'),
 ]
 

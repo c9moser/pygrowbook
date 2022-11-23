@@ -6,3 +6,8 @@ from django.http import HttpResponse
 def index(request):
     return HttpResponse('MyGrowBook/growlog/index')
 
+def growlog(request,growlog_id):
+    return HttpResponse('/growlog/growlog/{}/'.format(growlog_id))
+    
+def user_growlogs(request,user_id):
+    return HttpResponse('/growlog/user_growlogs/{}/'.format(user_id))

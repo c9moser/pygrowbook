@@ -16,9 +16,10 @@ urlpatterns = [
     path('strain_add/<slug:breeder_key>/',views.strain_add,name='strain_add'),
     path('strain_edit/<slug:breeder_key>/<slug:strain_key>/',views.strain_edit,name='strain_edit'),
     path('strain_delete/<slug:breeder_key>/<slug:strain_key>/',views.strain_delete,name='strain_delete'),
-    path('strain_translate/<slug:breeder_key>/<slug:strain_key>/',views.strain_translate,name='strain_translate'),
+    path('strain_translate/<slug:breeder_key>/<slug:strain_key>/<str:language_code>/',
+        views.strain_translate,name='strain_translate'),
     path('search/',views.strain_search,name='strain_search'),
-    path('user/',views.user,name='user'),
-    path('user/<int:user_id>/',views.manage_user,name='manage_user'),
+    path('manage_user/',views.manage_user,name='user'),
+    path('manage_user/<int:user_id>/',views.manage_user,name='manage_user'),
 ]
 

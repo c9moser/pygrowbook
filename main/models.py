@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin,Group
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -136,6 +137,16 @@ class User(AbstractBaseUser,PermissionsMixin):
             if not self.is_in_group(group_name):
                 self.add_to_group(group_name)
             
+        for group_fmt,add in config.USER_GROUPS_FORMAT:
+            group_name = group_fmt.format(uid=self.id)
+            try:
+                group = Group.objects.get(name=group_name)
+            except Group.DoesNotExist:
+                group = Group.objects.create(name=group_name)
+                
+            if group and add and not self.is_in_group(group):
+                self.add_to_group(group)
+                
         self._create_profile()
     # User.make_user()
         
@@ -215,4 +226,14 @@ class UserProfile(models.Model):
     avatar = models.ImageField(null=True,upload_to='avatars/')
     languages = models.ManyToManyField(Language)
 # UserProfile class
+
+class FileValid(models.Model):
+    filename = models.CharField(max_length=1024)
+    valid_until = models.DateTimeField()
+    
+    def is_valid(self):
+        now = datetime.datetime.now()
+        return (now < self.valid_until)
+    # FileValid.is_valid()
+# FileValid class
 

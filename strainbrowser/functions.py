@@ -1,4 +1,10 @@
+from django.template.loader import render_to_string
+import datetime
+
 from main import functions
+from main.models import FileValid
+
+from .config import COMPRESSION
 
 def get_context_variables(user=None,breeder=None,strain=None):
     def _get_breeder_context(user=None,breeder=None):
@@ -51,4 +57,40 @@ def get_context_variables(user=None,breeder=None,strain=None):
     
     return context
 # get_context_variables()
+
+   
+def export_breeder(breeder,domain,compression='none',valid=3600):
+    def timestring(dt):
+        return dt.strftime("%Y%m%d-%H%M%S")
+    # timestring()
+
+    now = datetime.datetime.now()
+    
+    xml_context = {
+        'domain': domain,
+        'breeder': breeder,
+        'protocol': settings.SITE_PROTOCOL,
+    }
+    if compression not in COMPRESSION:
+        compression = 'none'
+    compress = COMPRESSION[compression]
+    
+    ofile_name = os.path.join(
+        settings.MEDIA_ROOT,
+        'export',
+        'breeder',
+        '.'.join((breeder.key,timestring(now),'breeder')))
+        
+    if 'extension' in compress:
+        ofile_name = '.'.join((ofile_name,compress['extension']))
+            
+    data = render_to_string('strainbrowser/breeder/export.xml',xml_context)
+    if compress['binfmt']:
+        data = data.encode(encoding='UTF-8')
+            
+    with compress['open-func'](ofile_name,**compress['kwargs-write']) as ofile:
+        ofile.write(data)
+        
+    FileValid.objects.create(filename=ofile_name,valid_until=(now + datetime.timedelta(valid)))
+# export_breeder()
 

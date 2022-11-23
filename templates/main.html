@@ -19,9 +19,11 @@
         {% endif %}
         
         <div class='content'>
+            {% autoescape off %}
             <h1>{{ title }}</h1>
+            {% endautoescape %}
             {% block content %}
             {% endblock %}
         </div>
     </body>
-<html>
+</html>

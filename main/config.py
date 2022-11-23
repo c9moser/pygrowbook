@@ -7,9 +7,9 @@ from django.contrib.auth.models import Group
 def get_locale():
     return _('en-US')
 
-INDEX_TEMPLATE = {
-    'en-US': 'main/index/index.html',
-    'de': 'main/index/de.index.html',
+INFO_TEMPLATE = {
+    'en-US': 'main/index/info.html',
+    'de': 'main/index/de.info.html',
 }
 
 RESET_PASSWORD_MAIL_TEMPLATE = {
@@ -70,6 +70,7 @@ PROJECT_GROUPS = [
             'strainbrowser.strain.delete'
         ],
     ),
+    ('growlog.operator',['growlog.operator']),
     #('forum.operator',['forum.operator']),
     #('wiki.operator',['wiki.operator']),
 ]    

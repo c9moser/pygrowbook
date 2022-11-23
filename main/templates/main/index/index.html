@@ -1,16 +1,15 @@
 {% extends 'main.html' %}
 {% load i18n %}
+
+{% block left_sidebar %}
 {% include '../left_sidebar.html' %}
+{% endblock %}
 
 {% block content %}
-<p><strong>mygrowbook</strong> is a websitesite from growers for growers. 
-We offer a <a href="{% url 'forum:index' %}">Forum</a>, a 
-<a href="{% url 'wiki:index' %}">Wiki</a>, a             
-<a href="{% url 'growlog:index' %}">Growlog section</a> and a
-<a href="{% url 'strainbrowser:index' %}">Strain-Browser</a>.</p>
-
-<p>We are <span class='message-important'>not a shop</span> and 
-we are <span class='message-important'>not a trading platform for 
-cannabis</span>. Trading cannabis on this site leads inevitably to a ban!!!</p>
+{% if info_template %}
+    {% include info_template %}
+{% else %}
+    {% include "main/index/info.html" %}
+{% endif %}
 {% endblock %}
 
