@@ -1,0 +1,21 @@
+{% extends "../main.html" %}
+{% load i18n %}
+{% block content %}
+{% if search_result %}
+<table class="overview-table">
+    <tr>
+        <th>{% translate "Breeder" %}</th>
+        <th>{% translate "Strain" %}</th>
+    </tr>
+    {% for strain in search_result %}
+    <tr>
+        <td><a href="{% url 'strainbrowser:breeder_overview' strain.breeder.key %}">{{ strain.breeder.name }}</a></td>
+        <td><a href="{% url 'strainbrowser:strain' strain.breeder.key strain.key %}">{{ strain.name }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>{% translate "No Strains have been found!" %}
+{% endif %}
+{% endblock %}
+

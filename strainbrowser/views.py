@@ -332,7 +332,18 @@ def strain_search(request):
         return redirect('/strainbrowser/index')
         
     search = request.GET['search']
-    return HttpResponse('/strainbrowser/strain_search<br><b>search:</b> {}'.format(search))
+    search_result = Strain.objects.filter(name__contains=search).order_by('name')
+    context = {
+        'language_code': main_config.get_locale(),
+        'author': 'Christian Moser',
+        'title': _('Search result for {search}').format(search=search),
+        'head_title': _("GrowBook: Strain search result"),
+        'head_description': _("GrowBook: Strain search result"),
+        'search_result': search_result,
+    }
+    context.update(get_context_variables(request.user))
+    
+    return render(request,'strainbrowser/strain/search.html',context)
 
 
 @permission_required('strainbrowser.strain.add',login_url='/login/')
