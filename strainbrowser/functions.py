@@ -59,7 +59,7 @@ def get_context_variables(user=None,breeder=None,strain=None):
 # get_context_variables()
 
    
-def export_breeder(breeder,domain,compression='none',valid=3600):
+def export_breeder(user,breeders,domain,compression='none',valid=3600):
     def timestring(dt):
         return dt.strftime("%Y%m%d-%H%M%S")
     # timestring()
@@ -68,7 +68,7 @@ def export_breeder(breeder,domain,compression='none',valid=3600):
     
     xml_context = {
         'domain': domain,
-        'breeder': breeder,
+        'breeders': breeders,
         'protocol': settings.SITE_PROTOCOL,
     }
     if compression not in COMPRESSION:
@@ -79,7 +79,7 @@ def export_breeder(breeder,domain,compression='none',valid=3600):
         settings.MEDIA_ROOT,
         'export',
         'breeder',
-        '.'.join((breeder.key,timestring(now),'breeder')))
+        '.'.join((user.id,timestring(now),'breeder')))
         
     if 'extension' in compress:
         ofile_name = '.'.join((ofile_name,compress['extension']))
@@ -93,4 +93,8 @@ def export_breeder(breeder,domain,compression='none',valid=3600):
         
     FileValid.objects.create(filename=ofile_name,valid_until=(now + datetime.timedelta(valid)))
 # export_breeder()
+
+def import_breeder(self):
+    pass
+
 

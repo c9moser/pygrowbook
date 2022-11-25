@@ -15,7 +15,12 @@ from .config import COMPRESSION
 
 
 from .functions import get_context_variables
-from .forms import BreederForm,StrainForm,StrainTranslationForm
+from .forms import (
+    BreederForm,
+    DeleteBreederForm,
+    StrainForm,
+    StrainTranslationForm
+)
 
 from django.conf import settings
 
@@ -262,9 +267,110 @@ def breeder_export_done(request):
         
 @permission_required('strainbrowser.breeder.delete',login_url='/login/')
 def breeder_delete(request,breeder_key):
-    #TODO
-    return HttpResponse("strainbrowser/breeder_delete/{}/".format(breeder_key))
+    breeder = get_object_or_404(Breeder,key=breeder_key)
+    context = {
+        'language_code': main_config.get_locale(),
+        'author': "Christian Moser",
+        'title': _("Delete breeder {breeder}").format(breeder=breeder.name),
+        'head_title': _('GrowBook: Delete breeder'),
+        'head_description': _("GrowBook: Delete breeder {breeder}").format(breeder=breeder.name),
+        'has_strains': (breeder.strain_set.all().count() > 0),
+        'error_messages': [],
+        'breeder': breeder,
+    }
+    context.update(get_context_variables(request.user))
     
+    data = {
+        'key': breeder.key,
+        'primary_key': breeder.id,
+    }
+    if request.method == "POST":
+        done_html = "strainbrowser/breeder/breeder_delete_done.html"
+        form = DeleteBreederForm(request.POST,data)
+        if form.is_valid():
+            if 'delete_breeder' in form.cleaned_data and form.cleaned_data['delete_breeder']:
+                context['delete_canceled'] = False
+                deletion_ok = True
+                for strain in breeder.strain_set.all():
+                    strain_deletion_ok = True
+                    StrainBackup.objects.create(
+                        breeder=strain.breeder,
+                        strain=strain,
+                        language=Language.objects.get('en-US'),
+                        breeder_name=strain.breeder.name,
+                        breeder_key=strain.breeder.key,
+                        key=strain.key,
+                        name=strain.name,
+                        homepage=strain.homepage,
+                        seedfinder=strain.seedfinder,
+                        info=strain.info,
+                        description=strain.description,
+                        edited_by=strain.edited_by,
+                        backup_by=request.user                        
+                    )
+                    
+                    for translation in straintranslation_set.all():
+                        StrainBackup.objects.create(
+                            breeder=strain.breeder,
+                            strain=strain,
+                            strain_translation=translation,
+                            language=translation.language,
+                            breeder_name=strain.breeder.name,
+                            breeder_key=strain.breeder.key,
+                            key=strain.key,
+                            name=strain.name,
+                            homepage=translation.homepage,
+                            seedfinder=translation.seedfinder,
+                            info=translation.info,
+                            description=translation.description,
+                            edited_by=translation.edited_by,
+                            backup_by=request.user
+                        )
+                        try:
+                            translation.delete()
+                        except Exception as error:
+                            strain_deletion_ok = False
+                            context['error_messages'].append(
+                                _("Could not delete the {language} translation for strain {strain}!({error})").format(
+                                    language=translation.language.name,
+                                    strain=strain.name,
+                                    error=error))
+                    if strain_deletion_ok:
+                        try:
+                            strain.delete()
+                        except Exception as error:
+                            strain_deletion_ok = False
+                            deletion_ok = False
+                            context['error_messages'].append(
+                                _('Unable to delete strain {strain}! ({error})').format(
+                                    strain=strain.name,error=error))
+                    else:
+                        deletion_ok = False
+                        context['error_messages'].append(
+                            _('Unable to delete strain due to previous errors!'))
+                                
+                if deletion_ok:
+                    try:
+                        breeder.delete()
+                        context['delete_success'] = True
+                        return render(request,done_html,context)
+                    except Exception as error:
+                        context['error_messages'].append(
+                            _('Unable to delete breeder! ({error})').format(error=error))
+                else:
+                    context['error_messages'].append(_('Breeder could not be deleted due to previous errors!'))
+                
+                context['delete_success'] = False
+                return render(request,done_html,context)
+            # delete cnaceled
+            context['delete_canceled'] = True
+            return render(request,done_html,context)
+    
+    form = DeleteBreederForm(data)
+    context['form'] = form
+    return render(request,"strainbrowser/breeder/breeder_delete.html",context)
+# breeder_delete()
+
 def strain(request,breeder_key,strain_key):
     breeder = get_object_or_404(Breeder,key=breeder_key)
     strain = get_object_or_404(Strain,breeder=breeder.id,key=strain_key)
@@ -497,8 +603,11 @@ def strain_edit(request,breeder_key,strain_key):
             if not context['error_messages']:
                 if form.changed_data:
                     StrainBackup.objects.create(
+                        breeder = strain.breeder,
                         strain = strain,
                         language = Language.objects.get(locale='en-US'),
+                        breeder_key = strain.breeder.key,
+                        breeder_name = strain.breeder.name,
                         name = strain.name,
                         key = strain.key,
                         homepage = strain.homepage,
@@ -616,9 +725,12 @@ def strain_translate(request,breeder_key,strain_key,language_code):
                 translation = StrainTranslation.objects.create(**kwargs)
             elif form.changed_data: # have translation
                 StrainBackup.objects.create(
+                    breeder=strain.breeder,
                     strain=strain,
                     strain_translation=translation,
                     language=language,
+                    breeder_key=strain.breeder.key,
+                    breeder_name=strain.breeder.name,
                     key=strain.key,
                     name=strain.name,
                     homepage=translation.homepage,

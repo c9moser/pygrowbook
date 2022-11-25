@@ -13,7 +13,8 @@
     key CDATA #REQUIRED
     user CDATA #IMPLIED>
 <!ELEMENT strains (strain+)>
-<!ELEMENT breeder(name,homepage?,seedfinder?,strains?)>
+<!ELEMENT breeder (name,homepage?,seedfinder?,strains?)>
 <!ATTLIST breeder
     key CDATA #REQUIRED
     user CDATA #IMPLIED>
+<!ELEMENT breeders (breeder+)>

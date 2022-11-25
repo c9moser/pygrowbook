@@ -1,0 +1,19 @@
+{% extends '../main.html' %}
+{% load i18n %}
+
+{% block content %}
+<p>
+    <span class="message-important">You are about to delete a breeder with all 
+    connected strains an translations.</span> If the some strains are already 
+    connected to a growlog, the deleteion will fail!
+</p>
+
+<form class='content-form' method="post">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <br>
+    <input type='submit' value="{% translate 'Confirm Delete' %}">
+</form>
+{% endblock %}

@@ -28,6 +28,12 @@
     </span>
     {% endif %}
 </div>
+<div><strong>{% translate "Added by:" %}</strong>
+    <a href="{% url 'user:profile' strain.added_by.id %}">{{ strain.added_by.name }}</a>
+{% if strain.locale_added_by %}
+    <br><strong>{% translate "Translated by:" %}</strong>
+    <a href="{% url 'user:profile' strain.locale_added_by.id %}">{{ strain.locale_added_by.name }}</a>
+{% endif %}
 <div>
     <div class='strain-info'>
     {% if strain.locale_info %}

@@ -153,6 +153,13 @@ class Strain(models.Model):
         if translation and translation.homepage:
             return translation.homepage
         return self.homepage
+        
+    @property
+    def locale_added_by(self):
+        translation = self.locale_translation
+        if translation:
+            return translation.added_by
+        return None
     
 # Strain class
 
@@ -195,13 +202,20 @@ class StrainTranslation(models.Model):
 # StrainTranslation class
             
 class StrainBackup(models.Model):
-    strain = models.ForeignKey(Strain,on_delete=models.RESTRICT)
+    breeder = models.ForeignKey(Breeder,
+                                null=True,
+                                on_delete=models.SET_NULL)
+    strain = models.ForeignKey(Strain,  
+                               null=True,
+                               on_delete=models.SET_NULL)
     strain_translation = models.ForeignKey(StrainTranslation,
                                            null=True,
-                                           on_delete=models.RESTRICT)
+                                           on_delete=models.SET_NULL)
     language = models.ForeignKey(Language,
                                  related_name='language',
                                  on_delete=models.RESTRICT)
+    breeder_name = models.CharField(max_length=128)
+    breeder_key = models.CharField(max_length=64)
     key = models.CharField(max_length=64)
     name = models.CharField(max_length=256)
     homepage = models.CharField(max_length=512,

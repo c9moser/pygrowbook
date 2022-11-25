@@ -1,6 +1,8 @@
 {% extends "../main.html" %}
 {% load i18n %}
 {% block content %}
+<p><span class="message-important">{% translate "Please enter the data in ENGLISH!" %}</span>
+You can translate the strain later on. Thank you.</p>
 {% if error_messages %}
 <div class='message-error'>
     <ul>

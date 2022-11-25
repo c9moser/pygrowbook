@@ -11,3 +11,4 @@ localhost.cert.key
 localhost.cert.pem
 *.pem
 *.crt
+*/migrations/0*.py

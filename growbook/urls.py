@@ -24,6 +24,7 @@ urlpatterns = [
     path('wiki/',include('wiki.urls')),
     path('settings/',include('settings.urls')),
     path('martor/',include('martor.urls')),
+    path('user/',include('user.urls')),
     path('admin/', admin.site.urls),
 ]
 

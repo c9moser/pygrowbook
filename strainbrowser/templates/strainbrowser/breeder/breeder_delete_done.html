@@ -1,0 +1,46 @@
+{% extends "../main.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if delete_canceled %}
+<p>{% blocktranslate %}Deleting breeder {{ breeder.name }} was canceled by user.{% endblocktranslate %}</p>
+<span class="button">
+    <a href="{% url 'strainbrowser:breeder_overview' breeder.key %}">{% translate "Return to breeder" %}</a>
+</span>
+<span class="button">
+    <a href="{% url 'strainbrowser:index' %}">{% translate "Return to Strainbrowser" %}</a>
+</span>
+<span class="button">
+    <a href="{% url 'strainbrowser:breeder' %}">{% translate "Return to breeder list" %}</a>
+</span>
+{% elif delete_success %}
+<p>{% blocktranslate %}Breeder {{ breeder.name }} has been successfully deleted.{% endblocktranslate %}</p>
+<span class="button">
+    <a href="{% url 'strainbrowser:index' %}">{% translate "Return to Strainbrwoser" %}</a>
+</span>
+<span class="button">
+    <a href="{% url 'strainbrowser:breeder' %}">{% translate "Return to breeder list" %}</a>
+</span>
+{% else %}
+<p>{% blocktranslate %}Breeder {{ breeder.name }} could not be deleted!{% endblocktranslate %}</p>
+{% if error_messages %}
+<h2>Error messages</h2>
+<div class="message-error">
+    <ul>
+{% for error in error_messages %}
+        <li>{{ error }}</li>
+{% endfor %}
+    </ul>
+</div>
+{% endif %}
+<span class="button">
+    <a href="{% url 'strainbrowser:breeder_overview' breeder.key %}">{% translate "Return to breeder"</a>
+</span>
+<span class="button">
+    <a href="{% url 'strainbrowser:index' %}">{% translate "Return to Strainbrowser" %}</a>
+</span>
+<span class="button">
+    <a href="{% url 'strainbrowser:breeder' %}">{% translate "Return to Breeder list" %}</a>
+</span>
+{% endif %}
+{% endblock %}
